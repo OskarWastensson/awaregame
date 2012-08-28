@@ -1,11 +1,17 @@
 var http = require('http');
-
-// Require restify
 var restify = require('restify');  
 var server = restify.createServer();
 server.use(restify.bodyParser());
 
-console.log('Restify required...');
+var async   = require('async');
+var util    = require('util');
+
+
+require('faceplate').middleware({
+	app_id: process.env.FACEBOOK_APP_ID,
+	secret: process.env.FACEBOOK_SECRET,
+	scope:  'user_likes,user_photos,user_photo_video_tags'
+});
 
 // Require Moongoose
 var mongoose = require('mongoose');
@@ -24,20 +30,29 @@ var AnswerSchema = new Schema({
 mongoose.model('Answer', AnswerSchema); 
 var Answer = mongoose.model('Answer'); 
 
+
+// Authorization with FB
+// @TODO
+function auth() {
+	
+}
+
+
 // This function is responsible for returning all entries for the Message model
 function getAnswers(req, res, next) {
-  console.log('getAnswers()...');
-  console.log(Answer);
+	
   //// Resitify currently has a bug which doesn't allow you to set default headers
   // This headers comply with CORS and allow us to server our response to any origin
   res.header("Access-Control-Allow-Origin", "*"); 
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  // .find() without any arguments, will return all results
-  // the `-1` in .sort() means descending order
   // @TODO: query
-  Answer.find().execFind(function (arr,data) {
-    res.send(data);
-  });
+  if(auth()) {
+	Answer.find().execFind(function (arr,data) {
+		res.send(data);
+	});	  
+  } else {
+	res.send({})  
+  }
 }
 function postAnswer(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
