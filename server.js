@@ -1,17 +1,40 @@
 var http = require('http');
+
+// ############################################
+// # Frontend server at :80                   #
+// ############################################
+
+var send = require('send');
+var frontServer = http.createServer(function(req, res){
+  send(req, req.url)
+	.from(__dirname + '/front')
+	.pipe(res);
+});
+
+frontServer.listen(80, function() {
+	console.log('Frontend: Listening at port 80');
+});
+
+// ############################################
+// #  Backend server at :8080                 #
+// ############################################
+
+
 var restify = require('restify');  
-var server = restify.createServer();
-server.use(restify.bodyParser());
+var backendServer = restify.createServer();
+backendServer.use(restify.bodyParser());
 
 var async   = require('async');
 var util    = require('util');
 
-
+// @TODO facebook integration
+/*
 require('faceplate').middleware({
 	app_id: process.env.FACEBOOK_APP_ID,
 	secret: process.env.FACEBOOK_SECRET,
 	scope:  'user_likes,user_photos,user_photo_video_tags'
 });
+*/
 
 // Require Moongoose
 var mongoose = require('mongoose');
@@ -69,9 +92,10 @@ function postAnswer(req, res, next) {
 }
 
 // Set up our routes and start the server
-server.get('/answers', getAnswers);
-server.post('/answers', postAnswer);
+backendServer.get('/answers', getAnswers);
+backendServer.post('/answers', postAnswer);
 
-server.listen(80, function() {
-  console.log('%s listening at %s, love & peace', server.name, server.url);
+backendServer.listen(8080, function() {
+  console.log('%s listening at %s', backendServer.name, backendServer.url);
 });
+
