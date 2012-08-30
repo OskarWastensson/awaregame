@@ -19,7 +19,6 @@ frontServer.listen(80, function() {
 // #  Backend server at :8080                 #
 // ############################################
 
-
 var restify = require('restify');  
 var backendServer = restify.createServer();
 backendServer.use(restify.bodyParser());
@@ -98,4 +97,3 @@ backendServer.post('/answers', postAnswer);
 backendServer.listen(8080, function() {
   console.log('%s listening at %s', backendServer.name, backendServer.url);
 });
-
