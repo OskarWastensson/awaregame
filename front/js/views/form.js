@@ -2,8 +2,10 @@ define([
 	'jQuery',
   	'Underscore',
   	'Backbone',
-	'text!templates/form.html'
-], function($, _, Backbone, form){
+	'text!templates/form.html',
+	'views/animation',
+	'text!templates/animation.html'
+], function($, _, Backbone, form, AnimationView, animation){
 	var FormView = Backbone.View.extend({
 		tagName: 'div',
 		className: 'question-form',
@@ -14,6 +16,13 @@ define([
 		render: function(){
 			this.$el.html(this.template);
 			return this;
+		},
+		events: {
+			'click #submitQ': 'submit'
+		},
+		submit: function(){
+			AwRouter.showView('#content', new AnimationView());
+			return false;
 		}
 	});
 	return FormView;

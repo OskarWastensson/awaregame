@@ -7,7 +7,7 @@ define([
 	var ResultView = Backbone.View.extend({
 		tagName: 'div',
 		className: 'result',
-		template: _.template(tesult),
+		template: _.template(result),
 		initialize: function(){
 			_.bindAll(this, "render");
 		},

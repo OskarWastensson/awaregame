@@ -19,7 +19,7 @@ define([
 			'click #startGame': 'startGame'
 		},
 		startGame: function(){
-			AwRouter.navigate("!form", true);
+			AwRouter.navigate("form", true);
 		}
 	});
 	return WelcomeView;

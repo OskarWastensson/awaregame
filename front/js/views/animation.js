@@ -1,0 +1,29 @@
+define([
+	'jQuery',
+  	'Underscore',
+  	'Backbone',
+	'text!templates/animation.html',
+	'views/form'
+], function($, _, Backbone, animation, FormView){
+	var AnimationView = Backbone.View.extend({
+		tagName: 'div',
+		className: 'animation',
+		template: _.template(animation),
+		initialize: function(){
+			_.bindAll(this, "render");
+		},
+		render: function(){
+			this.$el.html(this.template);
+			return this;
+		},
+		events: {
+			'click #nextTest': 'openForm'
+		},
+		openForm: function(){
+			console.debug("test");
+			console.debug(AwRouter.showView);
+			// AwRouter.showView('#content', new FormView());
+		}
+	});
+	return AnimationView;
+});
