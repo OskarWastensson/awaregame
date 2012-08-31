@@ -3,11 +3,11 @@ define([
   	'Underscore',
   	'Backbone',
 	'text!templates/result.html'
-], function($, _, Backbone, result){
+], function($, _, Backbone, resultTpl){
 	var ResultView = Backbone.View.extend({
 		tagName: 'div',
 		className: 'result',
-		template: _.template(result),
+		template: _.template(resultTpl),
 		initialize: function(){
 			_.bindAll(this, "render");
 		},

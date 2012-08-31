@@ -3,10 +3,10 @@ define([
   	'Underscore',
   	'Backbone',
 	'text!templates/header.html'
-], function($, _, Backbone, header){
+], function($, _, Backbone, headerTpl){
 	var HeaderView = Backbone.View.extend({
 		tagName: 'div',
-		template: _.template(header),
+		template: _.template(headerTpl),
 		initialize: function(){
 			_.bindAll(this, "render");
 		},

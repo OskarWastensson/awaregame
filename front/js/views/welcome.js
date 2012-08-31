@@ -3,11 +3,11 @@ define([
   	'Underscore',
   	'Backbone',
 	'text!templates/welcome.html'
-], function($, _, Backbone, welcome){
+], function($, _, Backbone, welcomeTpl){
 	var WelcomeView = Backbone.View.extend({
 		tagName: 'div',
 		className: 'welcome',
-		template: _.template(welcome),
+		template: _.template(welcomeTpl),
 		initialize: function(){
 			_.bindAll(this, "render");
 		},

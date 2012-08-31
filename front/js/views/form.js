@@ -5,11 +5,11 @@ define([
 	'text!templates/form.html',
 	'views/animation',
 	'text!templates/animation.html'
-], function($, _, Backbone, form, AnimationView, animation){
+], function($, _, Backbone, formTpl, AnimationView, animation){
 	var FormView = Backbone.View.extend({
 		tagName: 'div',
 		className: 'question-form',
-		template: _.template(form),
+		template: _.template(formTpl),
 		initialize: function(){
 			_.bindAll(this, "render");
 		},
