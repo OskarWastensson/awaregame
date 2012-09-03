@@ -14,7 +14,9 @@ http.createServer(function (request, response) {
     });
 }).listen(8888);
 
+
 console.log('Static server listening on port 8888');
+
 
 // ############################################
 // #  Backend server at :8080                 #
