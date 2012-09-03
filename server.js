@@ -7,12 +7,12 @@ var http = require('http');
 var static = require('node-static');
 var frontend = new(static.Server)('./front');
 
-require('http').createServer(function (request, response) {
+http.createServer(function (request, response) {
     request.addListener('end', function () {
         // Serve files!
         frontend.serve(request, response);
     });
-}).listen(80);
+}).listen(8888);
 
 // ############################################
 // #  Backend server at :8080                 #

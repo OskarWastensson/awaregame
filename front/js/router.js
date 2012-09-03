@@ -21,14 +21,13 @@ define([
   var AppRouter = Backbone.Router.extend({
     routes: {
       '': 'welcome',
-	  '?': 'auth',
+	    '?': 'auth',
       'denied': 'denied',
       'form': 'form'
     },
     welcome: function(){
       // Facebook auth will redirect back to root - so before showing
 	  // welcomepage, we have to look for facebooks access token.
-	  console.log(window);
 	  this.before(function(){
         AwRouter.showView('#content', new WelcomeView());
       });
