@@ -3,7 +3,7 @@ var http = require('http');
 // ############################################
 // # Frontend server at :80                   #
 // ############################################
-
+/*
 var send = require('send');
 var frontServer = http.createServer(function(req, res){
   send(req, req.url)
@@ -14,7 +14,7 @@ var frontServer = http.createServer(function(req, res){
 frontServer.listen(80, function() {
 	console.log('Frontend: Listening at port 80');
 });
-
+*/
 // ############################################
 // #  Backend server at :8080                 #
 // ############################################

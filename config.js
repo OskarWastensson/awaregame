@@ -2,5 +2,5 @@
 exports.creds = {
   // Your mongo auth uri goes here
   // e.g. mongodb://username:server@mongoserver:10059/somecollection
-  mongoose_auth: 'mongodb://adminklara:awaregame@localhost:27017/awaregame'
+  mongoose_auth: 'mongodb://awaregame:awaregame@localhost:27017/awaregame'
 }
