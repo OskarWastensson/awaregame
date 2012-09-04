@@ -21,11 +21,13 @@ define([
   var AppRouter = Backbone.Router.extend({
     routes: {
       '': 'welcome',
-	  ':query': 'welcome',
-      'denied': 'denied',
+	  'denied': 'denied',
       'form': 'form'
     },
-    welcome: function(){
+    welcome: function(params){
+	  if(params) {
+	    console.log(params);
+	  }
 	  this.before(function(){
         AwRouter.showView('#content', new WelcomeView());
       });
