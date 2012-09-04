@@ -22,21 +22,13 @@ console.log('Static server listening on port 8888');
 // #  Backend server at :8080                 #
 // ############################################
 
-var restify = require('restify');  
-var backendServer = restify.createServer();
-backendServer.use(restify.bodyParser());
 
+var restify = require('restify');  
 var async   = require('async');
 var util    = require('util');
 
-// @TODO facebook integration
-/*
-require('faceplate').middleware({
-	app_id: process.env.FACEBOOK_APP_ID,
-	secret: process.env.FACEBOOK_SECRET,
-	scope:  'user_likes,user_photos,user_photo_video_tags'
-});
-*/
+var faceplate = require('faceplate');
+console.log(faceplate);
 
 // Require Moongoose
 var mongoose = require('mongoose');
@@ -55,29 +47,28 @@ var AnswerSchema = new Schema({
 mongoose.model('Answer', AnswerSchema); 
 var Answer = mongoose.model('Answer'); 
 
-
 // Authorization with FB
-// @TODO
-function auth() {
-	
-}
+function auth(req, res, next) {
+	console.log('Facebook AUTH');
 
+	faceplate.middleware(req, res, next);
+    console.log(req.facebook);
+	//req.facebook.get('/me', function(req, res) {
+	//	console.log(res);
+	//});
+	next();
+}
 
 // This function is responsible for returning all entries for the Message model
 function getAnswers(req, res, next) {
-	
-  //// Resitify currently has a bug which doesn't allow you to set default headers
+  // Resitify currently has a bug which doesn't allow you to set default headers
   // This headers comply with CORS and allow us to server our response to any origin
   res.header("Access-Control-Allow-Origin", "*"); 
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
   // @TODO: query
-  if(auth()) {
-	Answer.find().execFind(function (arr,data) {
-		res.send(data);
-	});	  
-  } else {
-	res.send({})  
-  }
+  Answer.find().execFind(function (arr,data) {
+	res.send(data);
+  });	  
 }
 function postAnswer(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -94,6 +85,9 @@ function postAnswer(req, res, next) {
 }
 
 // Set up our routes and start the server
+var backendServer = restify.createServer();
+backendServer.use(restify.bodyParser());
+backendServer.use(auth);
 backendServer.get('/answers', getAnswers);
 backendServer.post('/answers', postAnswer);
 
