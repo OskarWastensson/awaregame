@@ -4,7 +4,8 @@ require.config({
     jQuery: 'libs/jquery/jquery',
     Underscore: 'libs/underscore/underscore',
     Backbone: 'libs/backbone/backbone',
-	Parameters: 'libs/queryparams/backbone.queryparams'
+	Parameters: 'libs/queryparams/backbone.queryparams',
+	Facebook: 'libs/facebook/facebook'
   }
 
 });
