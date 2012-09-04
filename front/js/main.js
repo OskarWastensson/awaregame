@@ -1,3 +1,7 @@
+// make FB a global object
+
+var FB;
+
 // Require.js allows us to configure shortcut alias
 require.config({
   paths: {

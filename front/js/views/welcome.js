@@ -20,15 +20,17 @@ define([
 		},
 		startGame: function(){
 			//AwRouter.navigate("form", true);
-			
-			console.log(window.location);
-			
-			window.location = 'https://www.facebook.com/dialog/oauth' +
-				'?client_id=416322788424429&redirect_uri=' + 
-				window.location.origin 
-				'&scope=' + 
-				'user_about_me' + 
-				'&response_type=token';
+			//console.log(window);
+			FB.login(function(response) {
+				if (response.authResponse) {
+					// Logged in
+					FB.api('/me', function(response) {
+						console.log('Good to see you, ' + response.name + '.');
+					});
+				} else {
+					console.log('User cancelled login or did not fully authorize.');
+				}
+			});
 		}
 	});
 	return WelcomeView;
