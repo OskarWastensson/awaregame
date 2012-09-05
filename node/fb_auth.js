@@ -6,9 +6,7 @@
 //
 //	Takes a lot of inspiration from faceplate module for the express server.
 //
-//
-//
-//// Authorization with FB
+
 var b64url  = require('b64url');
 var crypto  = require('crypto');
 var qs      = require('querystring');

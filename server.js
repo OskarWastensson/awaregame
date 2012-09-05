@@ -52,11 +52,12 @@ function getAnswers(req, res, next) {
   // This headers comply with CORS and allow us to server our response to any origin
   res.header("Access-Control-Allow-Origin", "*"); 
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  // @TODO: query
-  Answer.find().execFind(function (arr,data) {
+  // @TODO: check query
+  Answer.find({user: req.user.id, module: req.params.module}).execFind(function (arr,data) {
 	res.send(data);
   });	  
 }
+
 function postAnswer(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
@@ -75,8 +76,8 @@ function postAnswer(req, res, next) {
 var backendServer = restify.createServer();
 backendServer.use(auth);
 backendServer.use(restify.bodyParser());
-backendServer.get('/answers', getAnswers);
-backendServer.post('/answers', postAnswer);
+backendServer.get('/:module/answers', getAnswers);
+backendServer.post('/:module/answers', postAnswer);
 
 backendServer.listen(8080, function() {
   console.log('%s listening at %s', backendServer.name, backendServer.url);
