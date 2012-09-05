@@ -26,6 +26,7 @@ console.log('Static server listening on port 8888');
 var restify = require('restify');  
 var async   = require('async');
 var util    = require('util');
+var auth = require('./node/fb_auth');
 
 // Require Moongoose
 var mongoose = require('mongoose');
@@ -44,90 +45,6 @@ var AnswerSchema = new Schema({
 mongoose.model('Answer', AnswerSchema); 
 var Answer = mongoose.model('Answer'); 
 
-// Authorization with FB
-var b64url  = require('b64url');
-var crypto  = require('crypto');
-var qs      = require('querystring');
-var restler = require('restler');
-var util    = require('util');
-
-function auth(req, res, next) {
-	var appId, secret, scope, encData, signature, json, data, expectedSig;
-	
-	appId  = 416322788424429;
-	secret  = '65289f36c2ca6411ef9dc5af9bf01581';
-	scope = '';
-	
-	 // Get a Cookie
-	var cookies = {};
-	req.headers.cookie && req.headers.cookie.split(';').forEach(function( cookie ) {
-		var parts = cookie.split('=');
-		cookies[ parts[ 0 ].trim() ] = ( parts[ 1 ] || '' ).trim();
-	});
-	if (!cookies['fbsr_' + appId]) throw("No cookie");
-	encData = cookies["fbsr_" + appId].split('.', 2);    
-	signature  = encData[0];
-	json = b64url.decode(encData[1]);
-	data = JSON.parse(json);
-
-	// check algorithm
-	if (!data.algorithm || (data.algorithm.toUpperCase() != 'HMAC-SHA256')) {
-		throw("unknown algorithm. expected HMAC-SHA256");
-	}
-
-	// check signature
-	expectedSig = crypto
-		.createHmac('sha256', secret)
-		.update(encData[1])
-		.digest('base64')
-		.replace(/\+/g,'-')
-		.replace(/\//g,'_')
-		.replace('=','');
-	
-	
-	if (signature !== expectedSig) throw("bad signature");		
-	if (!data.user_id) throw('not logged in');
-	
-	if(!data.access_token && data.code) {
-		// Code to get OAuth token
-		var params = {
-				client_id:     appId,
-				client_secret: secret,
-				redirect_uri:  '',
-				code:          data.code
-		};
-		
-		var request = restler.get('https://graph.facebook.com/oauth/access_token', 
-			{ query: params });
-
-		request.on('fail', function(result) {
-			var err = JSON.parse(result);
-			throw('invalid code: ' + err.error.message);
-		});
-
-		request.on('success', function(result) {
-			var parts = result.split('=');
-			data.access_token = parts[1];
-			console.log('Successfully fethed OAuth access token');
-		});
-	}
-	console.log(data);
-	if (!data.access_token) throw('no token');
-
-	// Fetch user daata
-	try{
-		restler.get('https://graph.facebook.com/me', 
-			{ query: { access_token: data.accessToken }})
-		.on('complete', function(data) {
-			var result = JSON.parse(data);
-			//console.log(result);
-			req.user = result;
-			next();
-		});
-	} catch(err) {
-		throw(err);
-	}
-}
 
 // This function is responsible for returning all entries for the Message model
 function getAnswers(req, res, next) {
@@ -156,8 +73,8 @@ function postAnswer(req, res, next) {
 
 // Set up our routes and start the server
 var backendServer = restify.createServer();
-backendServer.use(restify.bodyParser());
 backendServer.use(auth);
+backendServer.use(restify.bodyParser());
 backendServer.get('/answers', getAnswers);
 backendServer.post('/answers', postAnswer);
 
