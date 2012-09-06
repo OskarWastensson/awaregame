@@ -24,6 +24,10 @@ var restify = require('restify');
 var async   = require('async');
 var util    = require('util');
 var auth = require('./node/fb_auth');
+var b64url  = require('b64url');
+var crypto  = require('crypto');
+var qs      = require('querystring');
+var restler = require('restler');
 
 // Require Moongoose
 var mongoose = require('mongoose');
@@ -55,16 +59,13 @@ var Answer = mongoose.model('Answer');
 mongoose.model('Score', ScoreSchema);
 var Score = mongoose.model('Score');
 
-// This function is responsible for returning all entries for the Message model
 function getAnswers(req, res, next) {
-  // Resitify currently has a bug which doesn't allow you to set default headers
-  // This headers comply with CORS and allow us to server our response to any origin
-  res.header("Access-Control-Allow-Origin", "*"); 
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  // @TODO: check query
   Answer.find( {
 	  'user': req.user.id, 
 	  'module': req.params.module
+	})
+	.sort({
+		'question': 1
 	})
 	.execFind(function (arr,data) {
 	res.send(data);
@@ -72,14 +73,41 @@ function getAnswers(req, res, next) {
 }
 
 function getScore(req, res, next) {
-  
+  Score.find( {
+	  'user': req.user.id, 
+	  'module': req.params.module
+	})
+	.execFind(function (arr,data) {
+	res.send(data);
+  });  
+}
+
+function getList(req, res, next) {
+	try{
+		restler.get('https://graph.facebook.com/me/',
+			{ query: { 
+					'access_token': req.facebook.access_token, 
+					'fields': 'installed'
+				}})
+		.on('complete', function(data) {
+			var result = JSON.parse(data);
+			console.log(result);
+			//if(result.id) {
+			//	console.log('Fetched user info');
+			//	req.user = result;
+			//	next();
+			//} else {
+			//	deny(res, 'Failed to fetch user.');
+			//}
+		});
+	} catch(err) {
+		//deny(res, 'Restler error');
+		console.log(err);
+	}	
 }
 
 function postAnswer(req, res, next) {
-  console.log('posting answers');
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  // Create a new message model, fill it up and save it to Mongodb
+  // Create a new answer model, fill it up and save it to Mongodb
   var answer = new Answer(); 
   answer.module = req.params.module;
   answer.question = req.params.question;
@@ -88,30 +116,45 @@ function postAnswer(req, res, next) {
   answer.save(function () {
     res.send(req.body);
   });
-  
-  console.log(answer);
 }
 
 function postScore(req, res, next) {
-  
+  // Create a new score model, fill it up and save it to Mongodb
+  var score = new Score(); 
+  score.module = req.params.module;
+  score.value = req.params.value;
+  score.max = req.params.max;
+  score.user = req.user.id;
+  score.save(function () {
+    res.send(req.body);
+  });
 }
 
-function getList(req, res, next) {
-	
+function updateScore(req, res, next) {
+  Score.update( {
+	  'user': req.user.id, 
+	  'module': req.params.module
+	},
+	{
+		'value': req.params.value,
+		'max': req.params.max
+	},
+	[], function(err, numberAffected, raw) {
+		res.send(req.body);
+	});
 }
 
 // Set up our routes and start the server
-var backendServer = restify.createServer();
-backendServer.use(restify.bodyParser());
-backendServer.use(auth);
-backendServer.get('/:module/answers', getAnswers);
-backendServer.post('/:module/answers', postAnswer);
-backendServer.get('/:module/score', getScore);
-backendServer.post('/:module/score', postScore);
-backendServer.get('/:module/list', getList);
-
-
-
-backendServer.listen(8080, function() {
-  console.log('%s listening at %s', backendServer.name, backendServer.url);
+var bServer = restify.createServer();
+bServer.use(restify.bodyParser())
+bServer.use(auth)
+bServer.get('/:module/answers', getAnswers)
+bServer.post('/:module/answers', postAnswer)
+bServer.get('/:module/score', getScore)
+bServer.post('/:module/score', postScore)
+bServer.put('/:module/score', updateScore)
+bServer.get('/:module/list', getList);
+// Start server
+bServer.listen(8080, function() {
+  console.log('%s listening at %s', bServer.name, bServer.url);
 });
