@@ -30,7 +30,7 @@ define([
 				} else {
 					console.log('User cancelled login or did not fully authorize.');
 				}
-			});
+			}, {scope: 'friends_about_me'});
 		}
 	});
 	return WelcomeView;

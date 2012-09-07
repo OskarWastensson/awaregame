@@ -1,3 +1,4 @@
+
 var http = require('http');
 
 // ############################################
@@ -82,27 +83,40 @@ function getScore(req, res, next) {
   });  
 }
 
-function getList(req, res, next) {
+function getHighScore(req, res, next) {
 	try{
-		restler.get('https://graph.facebook.com/me/',
+		// Fetch friends from facebook
+		restler.get('https://graph.facebook.com/me/friends',
 			{ query: { 
-					'access_token': req.facebook.access_token, 
-					'fields': 'installed'
-				}})
+					'access_token': req.facebook.access_token,
+					'fields': 'installed',
+					'limit': 9999
+				}} 
+		)
 		.on('complete', function(data) {
+			// Keep only friends with installed = true
+			var i, friendsUsing = [];
 			var result = JSON.parse(data);
-			console.log(result);
-			//if(result.id) {
-			//	console.log('Fetched user info');
-			//	req.user = result;
-			//	next();
-			//} else {
-			//	deny(res, 'Failed to fetch user.');
-			//}
+			if(result.data) {
+				for(i = 0; i < result.data.length; i++) {
+					if(result.data[i].installed) {
+						friendsUsing.push(result.data[i].id);
+					}
+				}
+			}
+			friendsUsing.push(req.user.id);
+			
+			// Get score for theese friends
+			Score.find( {
+				'user': { $in : friendsUsing },
+				'module': req.params.module
+				})
+				.execFind(function (arr,data) {
+					res.send(data);
+			});
 		});
 	} catch(err) {
-		//deny(res, 'Restler error');
-		console.log(err);
+		res.send(err);
 	}	
 }
 
@@ -153,7 +167,7 @@ bServer.post('/:module/answers', postAnswer)
 bServer.get('/:module/score', getScore)
 bServer.post('/:module/score', postScore)
 bServer.put('/:module/score', updateScore)
-bServer.get('/:module/list', getList);
+bServer.get('/:module/highScore', getHighScore);
 // Start server
 bServer.listen(8080, function() {
   console.log('%s listening at %s', bServer.name, bServer.url);

@@ -19,7 +19,7 @@ function auth (req, res, next) {
 
 	appId  = 416322788424429;
 	secret  = '65289f36c2ca6411ef9dc5af9bf01581';
-	scope = '';
+	scope = 'friends_about_me';
 
 	// Get a Cookie
 	var cookies = {};
