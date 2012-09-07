@@ -16,7 +16,8 @@ define([
 			return this;
 		},
 		events: {
-			'click #startGame': 'startGame'
+			'click #startGame': 'startGame',
+			'click #testBtn': 'questionForm'
 		},
 		startGame: function(){
 			//AwRouter.navigate("form", true);
@@ -29,6 +30,9 @@ define([
 				'&scope=' + 
 				'user_about_me' + 
 				'&response_type=token';
+		},
+		questionForm: function(){
+			AwRouter.navigate("form", true);
 		}
 	});
 	return WelcomeView;

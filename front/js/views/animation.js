@@ -21,7 +21,6 @@ define([
 		},
 		openForm: function(){
 			console.debug("test");
-			console.debug(AwRouter.showView);
 			// AwRouter.showView('#content', new FormView());
 		}
 	});

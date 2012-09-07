@@ -21,12 +21,12 @@ define([
   var AppRouter = Backbone.Router.extend({
     routes: {
       '': 'welcome',
-	  ':query': 'welcome',
+	  // ':query': 'welcome',
       'denied': 'denied',
       'form': 'form'
     },
     welcome: function(){
-	  this.before(function(){
+	    this.before(function(){
         AwRouter.showView('#content', new WelcomeView());
       });
     },
@@ -37,6 +37,8 @@ define([
     },
     form: function(){
       this.before(function(){
+        // var questionsData = [{"title": "Första titeln", "text": "Första texten"}, {"title":"Andra titeln", "text": "Andra texten"}, {"title": "Tredje titeln", "text": "Tredje texten"}];
+        // console.debug(questions);
         AwRouter.showView('#content', new FormView());
         AwRouter.showView('#footer', new ResultView());
       });
@@ -66,8 +68,6 @@ define([
 	// Facebook auth will redirect back to root - so before showing
 	// welcomepage, we have to look for facebooks access token.
 
-	console.log(window.location);
-	
     AwRouter = new AppRouter;
     Backbone.history.start();
   };
