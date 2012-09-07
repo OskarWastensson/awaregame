@@ -2,12 +2,13 @@ define([
   'jQuery',
   'Underscore',
   'Backbone',
+  'Facebook',
   'views/welcome',
   'views/header',
   'views/denied',
   'views/form',
   'views/result'
-], function($, _, Backbone, WelcomeView, HeaderView, DeniedView, FormView, ResultView){
+], function($, _, Backbone, fb, WelcomeView, HeaderView, DeniedView, FormView, ResultView){
   
   //Add a close method to all views in backbone
   Backbone.View.prototype.close = function () {
@@ -21,8 +22,7 @@ define([
   var AppRouter = Backbone.Router.extend({
     routes: {
       '': 'welcome',
-	  // ':query': 'welcome',
-      'denied': 'denied',
+	  'denied': 'denied',
       'form': 'form'
     },
     welcome: function(){
@@ -65,9 +65,18 @@ define([
   });
 
   var initialize = function(){
+	var params;
 	// Facebook auth will redirect back to root - so before showing
 	// welcomepage, we have to look for facebooks access token.
-
+	params = window.location.search.slice(1).split('&');
+	$.each(params, function(i, rawParam) {
+	  paramParts = rawParam.split('=');
+	  if(paramParts[0] === 'code') {
+		  fb.storeCode(paramParts[1]);
+	  }
+	});
+	
+	// Backbone router initiatlization
     AwRouter = new AppRouter;
     Backbone.history.start();
   };

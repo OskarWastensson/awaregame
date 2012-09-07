@@ -1,3 +1,4 @@
+
 var http = require('http');
 
 // ############################################
@@ -14,89 +15,160 @@ http.createServer(function (request, response) {
     });
 }).listen(8888);
 
-
 console.log('Static server listening on port 8888');
-
 
 // ############################################
 // #  Backend server at :8080                 #
 // ############################################
 
 var restify = require('restify');  
-var backendServer = restify.createServer();
-backendServer.use(restify.bodyParser());
-
 var async   = require('async');
 var util    = require('util');
-
-// @TODO facebook integration
-/*
-require('faceplate').middleware({
-	app_id: process.env.FACEBOOK_APP_ID,
-	secret: process.env.FACEBOOK_SECRET,
-	scope:  'user_likes,user_photos,user_photo_video_tags'
-});
-*/
+var auth = require('./node/fb_auth');
+var b64url  = require('b64url');
+var crypto  = require('crypto');
+var qs      = require('querystring');
+var restler = require('restler');
 
 // Require Moongoose
 var mongoose = require('mongoose');
 var config = require('./config');
+
+
 db = mongoose.connect(config.creds.mongoose_auth),
 Schema = mongoose.Schema;  
 
-// Create a schema for our data
+// Create schema for our data
 var AnswerSchema = new Schema({
   module: String,
   question: Number,
   value: Number,
   user: Number
 });
+
+var ScoreSchema = new Schema({
+  module: String,
+  user: Number,
+  value: Number,
+  max: Number
+});
+
 // Use the schema to register a model with MongoDb
 mongoose.model('Answer', AnswerSchema); 
 var Answer = mongoose.model('Answer'); 
 
+mongoose.model('Score', ScoreSchema);
+var Score = mongoose.model('Score');
 
-// Authorization with FB
-// @TODO
-function auth() {
-	
-}
-
-
-// This function is responsible for returning all entries for the Message model
 function getAnswers(req, res, next) {
-	
-  //// Resitify currently has a bug which doesn't allow you to set default headers
-  // This headers comply with CORS and allow us to server our response to any origin
-  res.header("Access-Control-Allow-Origin", "*"); 
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  // @TODO: query
-  if(auth()) {
-	Answer.find().execFind(function (arr,data) {
-		res.send(data);
-	});	  
-  } else {
-	res.send({})  
-  }
+  Answer.find( {
+	  'user': req.user.id, 
+	  'module': req.params.module
+	})
+	.sort({
+		'question': 1
+	})
+	.execFind(function (arr,data) {
+	res.send(data);
+  });	  
 }
+
+function getScore(req, res, next) {
+  Score.find( {
+	  'user': req.user.id, 
+	  'module': req.params.module
+	})
+	.execFind(function (arr,data) {
+	res.send(data);
+  });  
+}
+
+function getHighScore(req, res, next) {
+	try{
+		// Fetch friends from facebook
+		restler.get('https://graph.facebook.com/me/friends',
+			{ query: { 
+					'access_token': req.facebook.access_token,
+					'fields': 'installed',
+					'limit': 9999
+				}} 
+		)
+		.on('complete', function(data) {
+			// Keep only friends with installed = true
+			var i, friendsUsing = [];
+			var result = JSON.parse(data);
+			if(result.data) {
+				for(i = 0; i < result.data.length; i++) {
+					if(result.data[i].installed) {
+						friendsUsing.push(result.data[i].id);
+					}
+				}
+			}
+			friendsUsing.push(req.user.id);
+			
+			// Get score for theese friends
+			Score.find( {
+				'user': { $in : friendsUsing },
+				'module': req.params.module
+				})
+				.execFind(function (arr,data) {
+					res.send(data);
+			});
+		});
+	} catch(err) {
+		res.send(err);
+	}	
+}
+
 function postAnswer(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  // Create a new message model, fill it up and save it to Mongodb
+  // Create a new answer model, fill it up and save it to Mongodb
   var answer = new Answer(); 
   answer.module = req.params.module;
   answer.question = req.params.question;
   answer.value = req.params.value;
-  answer.user = 0; // @TODO facebok user id
+  answer.user = req.user.id;
   answer.save(function () {
     res.send(req.body);
   });
 }
 
-// Set up our routes and start the server
-backendServer.get('/answers', getAnswers);
-backendServer.post('/answers', postAnswer);
+function postScore(req, res, next) {
+  // Create a new score model, fill it up and save it to Mongodb
+  var score = new Score(); 
+  score.module = req.params.module;
+  score.value = req.params.value;
+  score.max = req.params.max;
+  score.user = req.user.id;
+  score.save(function () {
+    res.send(req.body);
+  });
+}
 
-backendServer.listen(8080, function() {
-  console.log('%s listening at %s', backendServer.name, backendServer.url);
+function updateScore(req, res, next) {
+  Score.update( {
+	  'user': req.user.id, 
+	  'module': req.params.module
+	},
+	{
+		'value': req.params.value,
+		'max': req.params.max
+	},
+	[], function(err, numberAffected, raw) {
+		res.send(req.body);
+	});
+}
+
+// Set up our routes and start the server
+var bServer = restify.createServer();
+bServer.use(restify.bodyParser())
+bServer.use(auth)
+bServer.get('/:module/answers', getAnswers)
+bServer.post('/:module/answers', postAnswer)
+bServer.get('/:module/score', getScore)
+bServer.post('/:module/score', postScore)
+bServer.put('/:module/score', updateScore)
+bServer.get('/:module/highScore', getHighScore);
+// Start server
+bServer.listen(8080, function() {
+  console.log('%s listening at %s', bServer.name, bServer.url);
 });
