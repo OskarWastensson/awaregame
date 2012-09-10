@@ -2,13 +2,12 @@ define([
   'jQuery',
   'Underscore',
   'Backbone',
-  'Facebook',
   'views/welcome',
   'views/header',
   'views/denied',
   'views/form',
   'views/result'
-], function($, _, Backbone, fb, WelcomeView, HeaderView, DeniedView, FormView, ResultView){
+], function($, _, Backbone, WelcomeView, HeaderView, DeniedView, FormView, ResultView){
   
   //Add a close method to all views in backbone
   Backbone.View.prototype.close = function () {

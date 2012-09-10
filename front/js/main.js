@@ -1,6 +1,6 @@
 // make FB a global object
 
-var FB;
+
 
 // Require.js allows us to configure shortcut alias
 require.config({
@@ -9,11 +9,11 @@ require.config({
     Underscore: 'libs/underscore/underscore',
     Backbone: 'libs/backbone/backbone'
   },
-  urlArgs: "bust16",
-  Backbone: 'libs/backbone/backbone',
+  // urlArgs: "bust19",
+  urlArgs: "bust=" + (new Date()).getTime(),
+  Backbone: 'libs/backbone/backbone'
 	Parameters: 'libs/queryparams/backbone.queryparams',
-	Facebook: 'libs/facebook/facebook'
-  }
+	// Facebook: 'libs/facebook/facebook'
 
 });
 

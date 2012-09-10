@@ -1,9 +1,4 @@
-define([
-  // These are path alias that we configured in our bootstrap
-  'jQuery',     // lib/jquery/jquery
-  'Underscore', // lib/underscore/underscore
-  'Backbone'    // lib/backbone/backbone
-], function($, _, Backbone){
+
   window.fbAsyncInit = function() {
   FB.init({
       appId      : '416322788424429', // App ID
@@ -24,6 +19,3 @@ define([
      js.src = "//connect.facebook.net/en_US/all.js";
      ref.parentNode.insertBefore(js, ref);
    }(document));
-  
-  //return FB;
-});

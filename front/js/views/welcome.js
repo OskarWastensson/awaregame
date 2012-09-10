@@ -20,19 +20,6 @@ define([
 			'click #testBtn': 'questionForm'
 		},
 		startGame: function(){
-			//AwRouter.navigate("form", true);
-			console.log(window.location);
-			
-			window.location = 'https://www.facebook.com/dialog/oauth' +
-				'?client_id=416322788424429&redirect_uri=' + 
-				window.location.origin 
-				'&scope=' + 
-				'user_about_me' + 
-				'&response_type=token';
-		},
-		questionForm: function(){
-			AwRouter.navigate("form", true);
-
 			FB.login(function(response) {
 				if (response.authResponse) {
 					// Logged in
@@ -43,6 +30,13 @@ define([
 					console.log('User cancelled login or did not fully authorize.');
 				}
 			}, {scope: 'friends_about_me'});
+			
+			
+		},
+		questionForm: function(){
+			AwRouter.navigate("form", true);
+
+			
 		}
 	});
 	return WelcomeView;
