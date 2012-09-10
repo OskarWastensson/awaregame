@@ -12,12 +12,14 @@ define([
 		template: _.template(formTpl),
 		initialize: function(){
 			_.bindAll(this, "render");
-			this.collection = new QuestionsCollection([{"title": "Första titeln", "text": "Första texten"}, {"title":"Andra titeln", "text": "Andra texten"}, {"title": "Tredje titeln", "text": "Tredje texten"}]);
+			//this.collection = new QuestionsCollection([{"title": "Första titeln", "text": "Första texten"}, {"title":"Andra titeln", "text": "Andra texten"}, {"title": "Tredje titeln", "text": "Tredje texten"}]);
+			this.collection = new QuestionsCollection();
 			this.collection.bind("reset", this.render, this);
 			this.collection.bind("change", this.render, this);
+			this.collection.fetch();
 		},
 		render: function(){
-			// console.debug(this.collection.toJSON());
+			console.debug(this.collection.toJSON());
 			_.each(this.collection.models, function(question){
 				this.$el.append(new QuestionView({model: question}).render().el);
 			}, this);
