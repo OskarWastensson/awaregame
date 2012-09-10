@@ -5,8 +5,7 @@ define([
 	'models/question'
 ], function($, _, Backbone, QuestionModel){
 	var QuestionsCollection = Backbone.Collection.extend({
-		model: QuestionModel,
-		url: "js/data/questions.json"
+		model: QuestionModel
 	});
 	return QuestionsCollection;
 });
