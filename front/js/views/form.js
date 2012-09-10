@@ -14,10 +14,9 @@ define([
 		initialize: function(){
 			_.bindAll(this, "render");
 			this.collection = new QuestionsCollection(QuestionsData);
+			//this.collection = new QuestionsCollection([{"title": "Första titeln", "text": "Första texten"}, {"title":"Andra titeln", "text": "Andra texten"}, {"title": "Tredje titeln", "text": "Tredje texten"}]);
 			this.collection.bind("reset", this.render, this);
 			this.collection.bind("change", this.render, this);
-		},
-		render: function(){
 			console.debug(this.collection);
 			// this.$el.append(new QuestionsDatastionView({model: QuestionsData}).render().el);
 			// this.collection.at(0);

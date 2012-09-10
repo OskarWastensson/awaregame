@@ -74,15 +74,6 @@ define([
 
   var initialize = function(){
 	var params;
-	// Facebook auth will redirect back to root - so before showing
-	// welcomepage, we have to look for facebooks access token.
-	params = window.location.search.slice(1).split('&');
-	$.each(params, function(i, rawParam) {
-	  paramParts = rawParam.split('=');
-	  if(paramParts[0] === 'code') {
-		  fb.storeCode(paramParts[1]);
-	  }
-	});
 	
 	// Backbone router initiatlization
     AwRouter = new AppRouter;
