@@ -7,8 +7,9 @@ define([
   'views/denied',
   'views/form',
   'views/result',
-  'collections/questions'
-], function($, _, Backbone, WelcomeView, HeaderView, DeniedView, FormView, ResultView, QuestionsCollection){
+  'collections/questions',
+  'data/questions'
+], function($, _, Backbone, WelcomeView, HeaderView, DeniedView, FormView, ResultView, QuestionsCollection, QuestionsData){
   
   //Add a close method to all views in backbone
   Backbone.View.prototype.close = function () {
@@ -18,11 +19,6 @@ define([
       this.remove();
       this.unbind();
   };
-  // Backbone.Collection.prototype.removeModel(model) {
-  //     var _model = this.get(model);
-  //     this.remove(item);
-  //     return _model;
-  // }
 
   var AppRouter = Backbone.Router.extend({
     routes: {
@@ -42,12 +38,8 @@ define([
     },
     form: function(){
       this.before(function(){
-        // var questionsData = [{"title": "Första titeln", "text": "Första texten"}, {"title":"Andra titeln", "text": "Andra texten"}, {"title": "Tredje titeln", "text": "Tredje texten"}];
-        // console.debug(questions);
-        // var testCollection = new QuestionsCollection();
-        // testCollection.fetch();
-        // console.debug(testCollection);
-        AwRouter.showView('#content', new FormView());
+        var questions = new QuestionsCollection(QuestionsData);
+        AwRouter.showView('#content', new FormView({collection: questions}));
         AwRouter.showView('#footer', new ResultView());
       });
     },

@@ -4,31 +4,38 @@ define([
   	'Backbone',
 	'text!templates/form.html',
 	'views/question',
-	'collections/questions',
-	'data/questions'
-], function($, _, Backbone, formTpl, QuestionView, QuestionsCollection, QuestionsData){
+	'views/animation'
+], function($, _, Backbone, FormTpl, QuestionView, AnimationView){
 	var FormView = Backbone.View.extend({
 		tagName: 'div',
 		className: 'question-form',
-		template: _.template(formTpl),
+		template: _.template(FormTpl),
 		initialize: function(){
 			_.bindAll(this, "render");
-			this.collection = new QuestionsCollection(QuestionsData);
-			//this.collection = new QuestionsCollection([{"title": "Första titeln", "text": "Första texten"}, {"title":"Andra titeln", "text": "Andra texten"}, {"title": "Tredje titeln", "text": "Tredje texten"}]);
 			this.collection.bind("reset", this.render, this);
 			this.collection.bind("change", this.render, this);
-			console.debug(this.collection);
-			// this.$el.append(new QuestionsDatastionView({model: QuestionsData}).render().el);
-			// this.collection.at(0);
-
+		},
+		render: function(){
+			this.$el.html(this.template);
+			this.renderQuestion();
 			return this;
 		},
+		renderQuestion: function(){
+			var question  = this.collection.shift();
+			this.curQuestion = new QuestionView({model: question});
+
+			this.$el.find("#question").html(this.curQuestion.render().el);
+		},
 		events: {
-			'click #submitQ': 'submit'
+			'click #submitQuestion': 'submit'
 		},
 		submit: function(){
-			
-			// AwRouter.showView('#content', new AnimationView());
+			var self = this;
+			$("#animation").removeClass("hidden");
+			_.delay(function(){
+				$("#animation").addClass("hidden");
+				self.curQuestion.model = self.collection.shift();
+			}, 3000);
 			return false;
 		}
 	});
