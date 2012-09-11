@@ -22,16 +22,35 @@ function auth (req, res, next) {
 	scope = 'friends_about_me';
 
 	// Get a Cookie
+	
 	var cookies = {};
 	req.headers.cookie && req.headers.cookie.split(';').forEach(function( cookie ) {
 		var parts = cookie.split('=');
 		cookies[ parts[ 0 ].trim() ] = ( parts[ 1 ] || '' ).trim();
 	});
 	if (!cookies['fbsr_' + appId]) {
-		deny(res, 'No cookie');
-		return;
+		
+		// !! Cookies cannot be sent via current installation. Instead an extra 
+		// !! parameter is used
+		// 
+		// BEGIN ugly solution
+		console.log(req.query);
+		
+		if(req.query) {
+			encData = req.query
+				.substring(req.query.indexOf('code=') + 5)
+				.split('.', 2);
+		} else {
+			deny(res, 'No cookie');
+			return;
+		}
+		// END ugly solution
+	
+	} else {
+		encData = cookies["fbsr_" + appId].split('.', 2);    
 	}
-	encData = cookies["fbsr_" + appId].split('.', 2);    
+	
+	
 	signature  = encData[0];
 	json = b64url.decode(encData[1]);
 	data = JSON.parse(json);
@@ -51,8 +70,10 @@ function auth (req, res, next) {
 		.replace(/\//g,'_')
 		.replace('=','');
 
-
+		
 	if (signature !== expectedSig) {
+		console.log(signature);
+		console.log(expectedSig);
 		deny(res, 'Bad signature');
 		return;
 	}
@@ -96,11 +117,12 @@ function auth (req, res, next) {
 };
 
 function fetchUser (req, res, next) {
-	// Fetch user daata
+	// Fetch user data
 	try{
 		restler.get('https://graph.facebook.com/me', 
 			{ query: { access_token: req.facebook.access_token }})
 		.on('complete', function(data) {
+			
 			var result = JSON.parse(data);
 			if(result.id) {
 				console.log('Fetched user info');
@@ -109,6 +131,10 @@ function fetchUser (req, res, next) {
 			} else {
 				deny(res, 'Failed to fetch user.');
 			}
+		})
+		.on('fail', function() {
+			console.log('Facebook denied access');
+			return;
 		});
 	} catch(err) {
 		deny(res, 'Restler error');

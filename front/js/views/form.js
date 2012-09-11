@@ -4,8 +4,12 @@ define([
   	'Backbone',
 	'text!templates/form.html',
 	'views/question',
-	'views/animation'
-], function($, _, Backbone, FormTpl, QuestionView, AnimationView){
+	'collections/questions',
+	'data/questions',
+	'collections/answers'
+], function($, _, Backbone, FormTpl, 
+	QuestionView, QuestionsCollection, QuestionsData,
+	AnswersCollection){
 	var FormView = Backbone.View.extend({
 		tagName: 'div',
 		className: 'question-form',
@@ -14,6 +18,9 @@ define([
 			_.bindAll(this, "render");
 			this.collection.bind("reset", this.render, this);
 			this.collection.bind("change", this.render, this);
+			this.answers = new AnswersCollection();
+			this.answers.fetch();
+			console.debug(this.answers);
 		},
 		render: function(){
 			this.$el.html(this.template);
