@@ -5,8 +5,11 @@ define([
 	'text!templates/form.html',
 	'views/question',
 	'collections/questions',
-	'data/questions'
-], function($, _, Backbone, formTpl, QuestionView, QuestionsCollection, QuestionsData){
+	'data/questions',
+	'collections/answers'
+], function($, _, Backbone, formTpl, 
+	QuestionView, QuestionsCollection, QuestionsData,
+	AnswersCollection){
 	var FormView = Backbone.View.extend({
 		tagName: 'div',
 		className: 'question-form',
@@ -17,7 +20,10 @@ define([
 			//this.collection = new QuestionsCollection([{"title": "Första titeln", "text": "Första texten"}, {"title":"Andra titeln", "text": "Andra texten"}, {"title": "Tredje titeln", "text": "Tredje texten"}]);
 			this.collection.bind("reset", this.render, this);
 			this.collection.bind("change", this.render, this);
-			console.debug(this.collection);
+			
+			this.answers = new AnswersCollection();
+			this.answers.fetch();
+			console.debug(this.answers);
 			// this.$el.append(new QuestionsDatastionView({model: QuestionsData}).render().el);
 			// this.collection.at(0);
 

@@ -60,7 +60,17 @@ var Answer = mongoose.model('Answer');
 mongoose.model('Score', ScoreSchema);
 var Score = mongoose.model('Score');
 
+function setHeaders(req, res, next) {
+	var origins = 'http://localhost:8888';
+//	res.header('Access-Control-Allow-Credentials', true);
+	res.header('Access-Control-Allow-Origin', origins); 
+	res.header('Access-Control-Allow-Headers', "X-Requested-With");
+	console.log('setting headers');
+	next();
+}
+
 function getAnswers(req, res, next) {
+  
   Answer.find( {
 	  'user': req.user.id, 
 	  'module': req.params.module
@@ -160,13 +170,14 @@ function updateScore(req, res, next) {
 
 // Set up our routes and start the server
 var bServer = restify.createServer();
-bServer.use(restify.bodyParser())
-bServer.use(auth)
-bServer.get('/:module/answers', getAnswers)
-bServer.post('/:module/answers', postAnswer)
-bServer.get('/:module/score', getScore)
-bServer.post('/:module/score', postScore)
-bServer.put('/:module/score', updateScore)
+bServer.use(restify.bodyParser());
+bServer.use(auth);
+bServer.use(setHeaders);
+bServer.get('/:module/answers', getAnswers);
+bServer.post('/:module/answers', postAnswer);
+bServer.get('/:module/score', getScore);
+bServer.post('/:module/score', postScore);
+bServer.put('/:module/score', updateScore);
 bServer.get('/:module/highScore', getHighScore);
 // Start server
 bServer.listen(8080, function() {

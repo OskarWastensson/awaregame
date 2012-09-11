@@ -5,8 +5,8 @@ define([
 ], function($, _, Backbone){
 	var AnswerModel = Backbone.Model.extend({
 		defaults: {
-			'title': '',
-			'text': ''
+			'question': '',
+			'value': ''
 		}
 	});
 	return AnswerModel;
