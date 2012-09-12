@@ -10,11 +10,11 @@ define([
 		template: _.template(questionTpl),
 		initialize: function(){
 			_.bindAll(this, "render");
-			this.model.bind("reset", this.render, this);
-			this.model.bind("change", this.render, this);
+			this.collection.bind("reset", this.render, this);
+			this.collection.bind("change", this.render, this);
 		},
 		render: function(){
-			this.$el.html(this.template(this.model.toJSON()));
+			this.$el.html(this.template(this.collection.toJSON()));
 			return this;
 		}
 	});

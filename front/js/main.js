@@ -9,8 +9,8 @@ require.config({
     Underscore: 'libs/underscore/underscore',
     Backbone: 'libs/backbone/backbone'
   },
-  // urlArgs: "bust19",
-  urlArgs: "bust=" + (new Date()).getTime(),
+  urlArgs: "bust20",
+  // urlArgs: "bust=" + (new Date()).getTime(),
   Backbone: 'libs/backbone/backbone',
 	Parameters: 'libs/queryparams/backbone.queryparams'
 	// Facebook: 'libs/facebook/facebook'
