@@ -34,8 +34,7 @@ function auth (req, res, next) {
 		// !! parameter is used
 		// 
 		// BEGIN ugly solution
-		console.log(req.query);
-		
+	
 		if(req.query) {
 			encData = req.query
 				.substring(req.query.indexOf('code=') + 5)
@@ -72,8 +71,6 @@ function auth (req, res, next) {
 
 		
 	if (signature !== expectedSig) {
-		console.log(signature);
-		console.log(expectedSig);
 		deny(res, 'Bad signature');
 		return;
 	}
