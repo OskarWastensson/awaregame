@@ -1,4 +1,9 @@
 <form>
 	<h2><%= title %></h2>
-	<h3><%= text %><h3>
+	<h3><%= text %></h3>
+	<% for(var i=0; i < options.length; i = i + 1) {  %>
+		<% option = options[i]; %>
+		<p><input type="radio" name="answer" value="<%= option.value%>">
+		<%= option.text %></p>
+	<% } %>
 </form>
