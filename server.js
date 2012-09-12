@@ -24,7 +24,7 @@ console.log('Static server listening on port 8888');
 var restify = require('restify');  
 var async   = require('async');
 var util    = require('util');
-var auth = require('./node/fb_auth');
+var auth    = require('./node/fb_auth');
 var b64url  = require('b64url');
 var crypto  = require('crypto');
 var qs      = require('querystring');
