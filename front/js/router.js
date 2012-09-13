@@ -10,8 +10,20 @@ define([
   'collections/questions',
   'data/questions',
   'collections/answers'
-], function($, _, Backbone, WelcomeView, HeaderView, DeniedView, FormView, ResultView, QuestionsCollection, QuestionsData, AnswersCollection){
-  
+], function(
+  $,
+   _,
+  Backbone, 
+	WelcomeView, 
+  HeaderView, 
+  DeniedView, 
+  FormView, 
+  ResultView, 
+	QuestionsCollection, 
+	QuestionsData, 
+  AnswersCollection
+  ){
+
   //Add a close method to all views in backbone
   Backbone.View.prototype.close = function () {
       if (this.beforeClose) {
@@ -69,23 +81,23 @@ define([
   var initialize = function(){
 	
 	FB.Event.subscribe('auth.statusChange', function(response) {
-    if(response.status == 'connected') {
-        var fbAuth = FB.getAuthResponse();		
-		// Alway send along FB signed request with ajax calls to backend
-		$.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
-			if(options.data) {
-				options.data = options.data + '&code=' + fbAuth.signedRequest;
-			} else {
-				options.data = 'code=' + fbAuth.signedRequest;
-			}
-		});	
+		if(response.status == 'connected') {
+			console.log('FB init');
+			var fbAuth = FB.getAuthResponse();		
+			// Alway send along FB signed request with ajax calls to backend
+			$.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
+				if(options.data) {
+					options.data = options.data + '&code=' + fbAuth.signedRequest;
+				} else {
+					options.data = 'code=' + fbAuth.signedRequest;
+				}
+			});	
 		}
-		
-		// Backbone router initiatlization
-		AwRouter = new AppRouter;
-		Backbone.history.start();
 	});
 	
+	// Backbone router initiatlization
+	AwRouter = new AppRouter;
+	Backbone.history.start();
 
   };
   return {

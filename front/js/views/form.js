@@ -27,7 +27,6 @@ define([
 		},
 		renderQuestion: function(){
 			this.curQuestion = new QuestionView({collection: this.collection.first()});
-
 			this.$el.find("#question").html(this.curQuestion.render().el);
 		},
 		events: {
