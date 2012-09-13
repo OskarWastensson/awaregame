@@ -1,7 +1,7 @@
 define([
-	'jQuery',
-	'Underscore',
-	'libs/backbone/backbone-0.9.2'
+	'order!jQuery',
+	'order!Underscore',
+	'order!libs/backbone/backbone-0.9.2'
 	], function(){
   // Now that all the orignal source codes have ran and accessed each other
   // We can call noConflict() to remove them from the global name space
