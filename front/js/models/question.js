@@ -5,6 +5,7 @@ define([
 ], function($, _, Backbone){
 	var QuestionModel = Backbone.Model.extend({
 		defaults: {
+			'id': null,
 			'title': '',
 			'text': ''
 		}

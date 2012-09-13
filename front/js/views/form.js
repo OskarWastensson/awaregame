@@ -18,9 +18,7 @@ define([
 			_.bindAll(this, "render");
 			this.collection.bind("reset", this.render, this);
 			this.collection.bind("change", this.render, this);
-			this.answers = new AnswersCollection();
-			this.answers.fetch();
-			// console.debug(this.answers);
+
 		},
 		render: function(){
 			this.$el.html(this.template);
@@ -39,11 +37,11 @@ define([
 			if(this.collection.length > 1){
 				var self = this;
 				this.collection.shift();
+
 				$("#animation").removeClass("hidden");
 				_.delay(function(){
 					$("#animation").addClass("hidden");
 					self.render();
-					// self.curQuestion.model = self.collection.shift();
 				}, 1000);
 			} else {
 				console.debug("Show the total result");

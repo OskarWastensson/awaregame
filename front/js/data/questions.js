@@ -5,6 +5,7 @@ define([
 ], function($, _, Backbone){
 	var Questions = [
 		{
+			"id": 1,
 			"title": "Första titeln", 
 			"text": "Första texten",
 			"options": [
@@ -24,6 +25,7 @@ define([
 			"good_value": 80
 		}, 
 		{
+			"id": 2,
 			"title": "Andra titeln", 
 			"text": "Andra texten",
 			"options": [
@@ -43,6 +45,7 @@ define([
 			"good_value": 80
 		}, 
 		{
+			"id": 3,
 			"title": "Tredje titeln", 
 			"text": "Tredje texten",
 			"options": [

@@ -8,8 +8,9 @@ define([
   'views/form',
   'views/result',
   'collections/questions',
-  'data/questions'
-], function($, _, Backbone, WelcomeView, HeaderView, DeniedView, FormView, ResultView, QuestionsCollection, QuestionsData){
+  'data/questions',
+  'collections/answers'
+], function($, _, Backbone, WelcomeView, HeaderView, DeniedView, FormView, ResultView, QuestionsCollection, QuestionsData, AnswersCollection){
   
   //Add a close method to all views in backbone
   Backbone.View.prototype.close = function () {
@@ -39,6 +40,7 @@ define([
     form: function(){
       this.before(function(){
         var questions = new QuestionsCollection(QuestionsData);
+
         AwRouter.showView('#content', new FormView({collection: questions}));
         AwRouter.showView('#footer', new ResultView());
       });
