@@ -17,7 +17,6 @@ define([
 		},
 		events: {
 			'click #startGame': 'startGame',
-			'click #testBtn': 'questionForm'
 		},
 		startGame: function(){
 			FB.login(function(response) {
@@ -25,17 +24,13 @@ define([
 					// Logged in
 					FB.api('/me', function(response) {
 						console.log('Good to see you, ' + response.name + '.');
+						AwRouter.navigate("form", true);
 					});
 				} else {
 					console.log('User cancelled login or did not fully authorize.');
 				}
 			}, {scope: 'friends_about_me'});
 			
-			
-		},
-		questionForm: function(){
-			AwRouter.navigate("form", true);
-
 			
 		}
 	});

@@ -40,8 +40,8 @@ Schema = mongoose.Schema;
 
 // Create schema for our data
 var AnswerSchema = new Schema({
+  id: Number,
   module: String,
-  question: Number,
   value: Number,
   user: Number
 });
@@ -133,8 +133,8 @@ function getHighScore(req, res, next) {
 function postAnswer(req, res, next) {
   // Create a new answer model, fill it up and save it to Mongodb
   var answer = new Answer(); 
+  answer.id = req.params.id;
   answer.module = req.params.module;
-  answer.question = req.params.question;
   answer.value = req.params.value;
   answer.user = req.user.id;
   answer.save(function () {

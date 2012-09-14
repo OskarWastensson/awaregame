@@ -19,23 +19,20 @@ define([
 			this.collection.bind("reset", this.render, this);
 			this.collection.bind("change", this.render, this);
 			this.answers = new AnswersCollection();
-			this.answers.fetch();
 			this.answers.on('add', function(answerModel) {
 				answerModel.save();
 			}, this);
-			this.currentQuestionModel = this.collection.first(); 
-			// console.debug(this.answers);
+			this.currentQuestionModel = this.collection.first();
+			 
 		},
 		render: function(){
 			this.$el.html(this.template);
-			// this.renderQuestion();
-
 			this.renderQuestion();
-			console.debug(this.answers.get('question', '1'), this.collection.get('1'));
 
 			return this;
 		},
 		renderQuestion: function(){
+			var self = this;
 			this.curQuestion = new QuestionView({collection: this.currentQuestionModel});
 			this.$el.find("#question").html(this.curQuestion.render().el);
 		},
