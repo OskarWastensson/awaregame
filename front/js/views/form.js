@@ -27,14 +27,22 @@ define([
 		},
 		render: function(){
 			this.$el.html(this.template);
-			this.renderQuestion();
-
+			
+			var self = this;
+			this.answers.fetch({
+				success: function(){
+					self.renderQuestion();
+				}
+			});
 			return this;
 		},
 		renderQuestion: function(){
-			var self = this;
-			this.curQuestion = new QuestionView({collection: this.currentQuestionModel});
-			this.$el.find("#question").html(this.curQuestion.render().el);
+			if(typeof this.answers.get(this.currentQuestionModel.get("id")) === 'undefined'){
+				this.curQuestion = new QuestionView({collection: this.currentQuestionModel});
+				this.$el.find("#question").html(this.curQuestion.render().el);
+			} else {
+				console.debug("Show the result of the question");
+			}
 		},
 		events: {
 			'click #submitQuestion': 'submit'

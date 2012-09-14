@@ -19,19 +19,7 @@ define([
 			'click #startGame': 'startGame',
 		},
 		startGame: function(){
-			FB.login(function(response) {
-				if (response.authResponse) {
-					// Logged in
-					FB.api('/me', function(response) {
-						console.log('Good to see you, ' + response.name + '.');
-						AwRouter.navigate("form", true);
-					});
-				} else {
-					console.log('User cancelled login or did not fully authorize.');
-				}
-			}, {scope: 'friends_about_me'});
-			
-			
+			AwRouter.navigate("form", true);
 		}
 	});
 	return WelcomeView;

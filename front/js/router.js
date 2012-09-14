@@ -36,7 +36,7 @@ define([
   var AppRouter = Backbone.Router.extend({
     routes: {
       '': 'welcome',
-	  'denied': 'denied',
+	   'denied': 'denied',
       'form': 'form'
     },
     welcome: function(){
@@ -50,11 +50,14 @@ define([
       });
     },
     form: function(){
-      this.before(function(){
-        var questions = new QuestionsCollection(QuestionsData);
+      var self = this;
+      this.fbLogin(function(){
+        self.before(function(){
+          var questions = new QuestionsCollection(QuestionsData);
 
-        AwRouter.showView('#content', new FormView({collection: questions}));
-        AwRouter.showView('#footer', new ResultView());
+          AwRouter.showView('#content', new FormView({collection: questions}));
+          AwRouter.showView('#footer', new ResultView());
+        });
       });
     },
     showView: function(selector, view){
@@ -75,6 +78,19 @@ define([
         AwRouter.curHeader = AwRouter.showView('#header', new HeaderView());
         if(callback) callback();
       }
+    },
+    fbLogin: function(callback){
+      FB.login(function(response) {
+       if (response.authResponse) {
+         // Logged in
+         FB.api('/me', function(response) {
+           console.log('Good to see you, ' + response.name + '.');
+            if(callback) callback();
+         });
+       } else {
+         console.log('User cancelled login or did not fully authorize.');
+       }
+     }, {scope: 'friends_about_me'});
     }
   });
 
