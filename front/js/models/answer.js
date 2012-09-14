@@ -9,7 +9,8 @@ define([
 			'value': null,
 			'module': '',
 			'question': null
-		}
+		},
+		'url': 'http://localhost:8080/mat/answers'
 	});
 	return AnswerModel;
 });

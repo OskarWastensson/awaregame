@@ -6,12 +6,10 @@ require.config({
     Backbone: 'libs/backbone/backbone',
 	asyncF: 'libs/facebook/asyncF',
 	FB: 'http://connect.facebook.net/en_US/all.js'
-  },
+  }
   // urlArgs: "bust33333",
  // urlArgs: "bust=" + (new Date()).getTime(),
- Backbone: 'libs/backbone/backbone',
- Parameters: 'libs/queryparams/backbone.queryparams'
- });
+  });
 
 require([
   // Load our app module and pass it to our definition function

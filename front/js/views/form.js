@@ -20,7 +20,11 @@ define([
 			this.collection.bind("change", this.render, this);
 			this.answers = new AnswersCollection();
 			this.answers.fetch();
-
+			this.answers.on('add', function(answerModel) {
+				answerModel.save();
+			}, this);
+			this.currentQuestionModel = this.collection.first(); 
+			// console.debug(this.answers);
 		},
 		render: function(){
 			this.$el.html(this.template);
@@ -32,26 +36,30 @@ define([
 			return this;
 		},
 		renderQuestion: function(){
-			// this.curQuestion = new QuestionView({collection: this.collection.first()});
-			// this.$el.find("#question").html(this.curQuestion.render().el);
+			this.curQuestion = new QuestionView({collection: this.currentQuestionModel});
+			this.$el.find("#question").html(this.curQuestion.render().el);
 		},
 		events: {
 			'click #submitQuestion': 'submit'
 		},
 		submit: function(){
-			// if(this.collection.length > 1){
-			// 	var self = this;
-			// 	this.collection.shift();
-
-			// 	$("#animation").removeClass("hidden");
-			// 	_.delay(function(){
-			// 		$("#animation").addClass("hidden");
-			// 		self.render();
-			// 	}, 1000);
-			// } else {
-			// 	console.debug("Show the total result");
-			// }
-			
+			this.answers.add({
+				'question': this.currentQuestionModel.id,
+				'value': $('input:radio[name=answer]:checked').val()
+			});
+						
+			if(this.currentQuestionModel.id != this.collection.length){
+				var self = this;
+				this.currentQuestionModel = 
+					this.collection.get(this.currentQuestionModel.id + 1);
+				$("#animation").removeClass("hidden");
+				_.delay(function(){
+					$("#animation").addClass("hidden");
+					self.render();
+				}, 1000);
+			} else {
+				console.debug("Show the total result");
+			}
 			return false;
 		}
 	});
