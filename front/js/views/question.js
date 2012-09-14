@@ -3,8 +3,7 @@ define([
   	'Underscore',
   	'Backbone',
   	'text!templates/question.html',
-  	'collections/answers'
-], function($, _, Backbone, questionTpl, AnswersCollection){
+], function($, _, Backbone, questionTpl){
 	var QuestionView = Backbone.View.extend({
 		tagName: 'div',
 		className: 'question-item',
@@ -13,10 +12,9 @@ define([
 			_.bindAll(this, "render");
 			this.collection.bind("reset", this.render, this);
 			this.collection.bind("change", this.render, this);
-			this.answers = new AnswersCollection();
-			this.answers.fetch();
+	
 
-       		console.debug(this.answers);
+       		// console.debug(this.answers.where({module: 'food'}));
        		
        		// console.debug(this.answers);
        		// var test = this.answers.where({module: "food"});

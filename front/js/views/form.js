@@ -18,33 +18,39 @@ define([
 			_.bindAll(this, "render");
 			this.collection.bind("reset", this.render, this);
 			this.collection.bind("change", this.render, this);
+			this.answers = new AnswersCollection();
+			this.answers.fetch();
 
 		},
 		render: function(){
 			this.$el.html(this.template);
+			// this.renderQuestion();
+
 			this.renderQuestion();
+			console.debug(this.answers.get('question', '1'), this.collection.get('1'));
+
 			return this;
 		},
 		renderQuestion: function(){
-			this.curQuestion = new QuestionView({collection: this.collection.first()});
-			this.$el.find("#question").html(this.curQuestion.render().el);
+			// this.curQuestion = new QuestionView({collection: this.collection.first()});
+			// this.$el.find("#question").html(this.curQuestion.render().el);
 		},
 		events: {
 			'click #submitQuestion': 'submit'
 		},
 		submit: function(){
-			if(this.collection.length > 1){
-				var self = this;
-				this.collection.shift();
+			// if(this.collection.length > 1){
+			// 	var self = this;
+			// 	this.collection.shift();
 
-				$("#animation").removeClass("hidden");
-				_.delay(function(){
-					$("#animation").addClass("hidden");
-					self.render();
-				}, 1000);
-			} else {
-				console.debug("Show the total result");
-			}
+			// 	$("#animation").removeClass("hidden");
+			// 	_.delay(function(){
+			// 		$("#animation").addClass("hidden");
+			// 		self.render();
+			// 	}, 1000);
+			// } else {
+			// 	console.debug("Show the total result");
+			// }
 			
 			return false;
 		}
