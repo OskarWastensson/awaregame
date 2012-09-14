@@ -86,11 +86,9 @@ define([
 			var fbAuth = FB.getAuthResponse();		
 			// Alway send along FB signed request with ajax calls to backend
 			$.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
-				if(options.data) {
-					options.data = options.data + '&code=' + fbAuth.signedRequest;
-				} else {
-					options.data = 'code=' + fbAuth.signedRequest;
-				}
+				var data;
+				console.log('prefiltering');
+				options.url = options.url += '?code=' + fbAuth.signedRequest;
 			});	
 		}
 	});
@@ -98,7 +96,7 @@ define([
 	// Backbone router initiatlization
 	AwRouter = new AppRouter;
 	Backbone.history.start();
-
+	
   };
   return {
     initialize: initialize

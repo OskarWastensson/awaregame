@@ -3,7 +3,9 @@
 	<h3><%= text %></h3>
 	<% for(var i=0; i < options.length; i = i + 1) {  %>
 		<% option = options[i]; %>
-		<p><input type="radio" name="answer" value="<%= option.value%>">
-		<%= option.text %></p>
+		<p>
+			<input type="radio" name="answer" value="<%= option.value%>">
+			<label><%= option.text %></label>
+		</p>
 	<% } %>
 </form>
