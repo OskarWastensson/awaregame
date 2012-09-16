@@ -5,11 +5,14 @@ define([
   'views/welcome',
   'views/header',
   'views/denied',
-  'views/form',
+  // 'views/form',
   'views/result',
   'collections/questions',
   'data/questions',
-  'collections/answers'
+  'collections/answers',
+  'views/question',
+  'views/result'
+
 ], function(
   $,
    _,
@@ -17,11 +20,13 @@ define([
 	WelcomeView, 
   HeaderView, 
   DeniedView, 
-  FormView, 
+  // FormView, 
   ResultView, 
 	QuestionsCollection, 
 	QuestionsData, 
-  AnswersCollection
+  AnswersCollection,
+  QuestionView,
+  ResultView
   ){
 
   //Add a close method to all views in backbone
@@ -36,8 +41,9 @@ define([
   var AppRouter = Backbone.Router.extend({
     routes: {
       '': 'welcome',
-	   'denied': 'denied',
-      'form': 'form'
+	    'denied': 'denied',
+      // 'questions': 'form',
+      'questions/:id': 'question'
     },
     welcome: function(){
 	    this.before(function(){
@@ -49,14 +55,52 @@ define([
         AwRouter.showView('#content', new DeniedView());
       });
     },
-    form: function(){
+    // form: function(){
+    //   var self = this;
+    //   this.fbLogin(function(){
+    //     self.before(function(){
+    //       this.questions = new QuestionsCollection(QuestionsData);
+    //       AwRouter.showView('#content', new FormView({collection: this.questions}));
+    //       AwRouter.showView('#footer', new ResultView());
+    //     });
+    //   });
+    // },
+    fetchAnswers: function(){
+      this.answers = new AnswersCollection();
       var self = this;
-      this.fbLogin(function(){
-        self.before(function(){
-          var questions = new QuestionsCollection(QuestionsData);
-
-          AwRouter.showView('#content', new FormView({collection: questions}));
-          AwRouter.showView('#footer', new ResultView());
+      this.answers.fetch({
+        success: function(){
+          
+          if(self.requestedId) self.question(self.requestedId);
+        }
+      });
+    },
+    question: function(id){
+      var self = this;
+      this.before(function(){
+        self.fbLogin(function(){
+          if(!self.questionsList){
+            self.questionsList = new QuestionsCollection(QuestionsData);
+          }
+          //Check if the question is answered
+          if(self.answers){
+            //Check if the question exist
+            if(self.questionsList.get(id)){
+              
+              // TODO Show something if the question already is answered
+              $("#content").html(new QuestionView({model: self.questionsList.get(id)}).render().el);
+              
+              //Render the result
+              if(!self.curResult){
+                self.curResult = $('#footer').html(new ResultView().render().el); 
+              }
+            } else {
+              console.debug("The question doesn't exist");
+            }
+          } else {
+            self.requestedId = id;
+            self.fetchAnswers();
+          }
         });
       });
     },

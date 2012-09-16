@@ -1,6 +1,9 @@
 <form>
 	<h2><%= title %></h2>
 	<h3><%= text %></h3>
+	<p><input type="radio" name="answer" value="" checked="checked">
+		<label>Välj alternativ</label>
+	</p>
 	<% for(var i=0; i < options.length; i = i + 1) {  %>
 		<% option = options[i]; %>
 		<p>
@@ -8,4 +11,13 @@
 			<label><%= option.text %></label>
 		</p>
 	<% } %>
+	<button id="submitQuestion">Submit question</button>
 </form>
+<div id="animation" class="hidden">
+	<div id="good">
+		<img src="images/banan.gif" />
+	</div>
+	<div id="bad">
+		<img src="images/tomato.gif" />
+	</div>
+</div>
