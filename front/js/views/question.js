@@ -23,24 +23,24 @@ define([
 		},
 		submit: function(){
 			var self = this;
-			if(this.model.get('id') != QuestionsData.length){
-				$("#animation").removeClass("hidden");
+			var questionValue = $('input:radio[name=answer]:checked').val();
+			$("#animation").removeClass("hidden");
 
-				var score = 10; //Move this later
-
-				if(score > 10){
-					$("#good").show();
-				} else {
-					$("#bad").show();
-				}
-
-				_.delay(function(){
-					$("#animation").addClass("hidden");
-					AwRouter.navigate('questions/' + (self.model.get('id') + 1), true);
-				}, 1000);
+			if(questionValue > 70){
+				$("#good").show();
 			} else {
-				console.debug("Show the total result");	
+				$("#bad").show();
 			}
+
+			_.delay(function(){
+				$("#animation").addClass("hidden");
+
+				if(self.model.get('id') != QuestionsData.length){
+					AwRouter.navigate('questions/' + (self.model.get('id') + 1), true);
+				} else {
+					console.debug("Show the total result");	
+				}
+			}, 1000);
 			return false;
 		}
 	});
