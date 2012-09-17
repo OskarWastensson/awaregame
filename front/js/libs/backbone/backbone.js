@@ -1,6 +1,4 @@
 define([
-	'order!jQuery',
-	'order!Underscore',
 	'order!libs/backbone/backbone-0.9.2'
 	], function(){
   // Now that all the orignal source codes have ran and accessed each other
