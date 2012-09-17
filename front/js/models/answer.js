@@ -8,12 +8,15 @@ define([
 			'value': null,
 			'id': null
 		},
-		'url': 'http://localhost:8080/mat/answers'
+
 		// validate: function(attrs){
 		// 	if(attrs.value === 0){
 		// 		return "You haven't answered the question!";
 		// 	}
 		// }
+
+		'url': 'http://localhost:8080/food/answers'
+
 	});
 	return AnswerModel;
 });

@@ -69,19 +69,6 @@ function setHeaders(req, res, next) {
 	next();
 }
 
-function getAnswers(req, res, next) {
-  
-  Answer.find( {
-	  'user': req.user.id, 
-	  'module': req.params.module
-	})
-	.sort({
-		'id': 1
-	})
-	.execFind(function (arr,data) {
-	res.send(data);
-  });	  
-}
 
 function getScore(req, res, next) {
   Score.find( {
@@ -152,6 +139,20 @@ function postAnswer(req, res, next) {
 		}
 	})
   });
+}
+
+function getAnswers(req, res, next) {
+  
+  Answer.find( {
+	  'user': req.user.id, 
+	  'module': req.params.module
+	})
+	.sort({
+		'id': 1
+	})
+	.execFind(function (arr,data) {
+	res.send(data);
+  });	  
 }
 
 function postScore(req, res, next) {
