@@ -32,7 +32,6 @@ define([
 				'question': this.model.get('id'),
 				'value': questionValue
 			});
-			console.debug(this.options.answers);
 			$("#animation").removeClass("hidden");
 
 			if(questionValue > 70){
