@@ -14,7 +14,6 @@ define([
 			this.model.bind("reset", this.render, this);
 			this.model.bind("change", this.render, this);
 			this.options.answers.on('add', function(answerModel) {
-			    console.debug("add");
 			    answerModel.save();
   			}, this);
 		},
@@ -28,7 +27,6 @@ define([
 		submit: function(){
 			var self = this;
 			var questionValue = parseInt($('input:radio[name=answer]:checked').val());
-			// console.debug(this.model.get('id'), questionValue);
 
 			this.options.answers.add({
 				'question': this.model.get('id'),
@@ -46,7 +44,7 @@ define([
 			_.delay(function(){
 				$("#animation").addClass("hidden");
 				if(self.model.get('id') != QuestionsData.length){
-					// AwRouter.navigate('questions/' + (self.model.get('id') + 1), true);
+					AwRouter.navigate('questions/' + (self.model.get('id') + 1), true);
 				} else {
 					console.debug("Show the total result");	
 				}
