@@ -29,7 +29,7 @@ define([
 			var questionValue = parseInt($('input:radio[name=answer]:checked').val());
 
 			this.options.answers.add({
-				'question': this.model.get('id'),
+				'id': this.model.get('id'),
 				'value': questionValue
 			});
 			$("#animation").removeClass("hidden");

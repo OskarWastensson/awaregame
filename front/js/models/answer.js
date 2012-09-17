@@ -5,10 +5,8 @@ define([
 ], function($, _, Backbone){
 	var AnswerModel = Backbone.Model.extend({
 		defaults: {
-			'user': null,
 			'value': null,
-			'module': '',
-			'question': null
+			'id': null
 		},
 		'url': 'http://localhost:8080/mat/answers'
 		// validate: function(attrs){

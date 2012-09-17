@@ -76,7 +76,7 @@ function getAnswers(req, res, next) {
 	  'module': req.params.module
 	})
 	.sort({
-		'question': 1
+		'id': 1
 	})
 	.execFind(function (arr,data) {
 	res.send(data);
@@ -133,12 +133,24 @@ function getHighScore(req, res, next) {
 function postAnswer(req, res, next) {
   // Create a new answer model, fill it up and save it to Mongodb
   var answer = new Answer(); 
+  
   answer.id = req.params.id;
   answer.module = req.params.module;
   answer.value = req.params.value;
   answer.user = req.user.id;
-  answer.save(function () {
-    res.send(req.body);
+  
+  answer.save(function (err) {
+	if(err) {
+	  res.send(err);
+	}
+	
+	Answer.find({'_id': answer._id}, function(err, result) {
+		if(err) {
+			res.send(err);
+		} else {
+			res.send(result)
+		}
+	})
   });
 }
 
@@ -175,6 +187,7 @@ bServer.use(auth);
 bServer.use(setHeaders);
 bServer.get('/:module/answers', getAnswers);
 bServer.post('/:module/answers', postAnswer);
+bServer.put('/:module/answers', postAnswer);
 bServer.get('/:module/score', getScore);
 bServer.post('/:module/score', postScore);
 bServer.put('/:module/score', updateScore);
