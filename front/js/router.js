@@ -88,7 +88,7 @@ define([
             if(self.questionsList.get(id)){
               
               // TODO Show something if the question already is answered
-              $("#content").html(new QuestionView({model: self.questionsList.get(id)}).render().el);
+              $("#content").html(new QuestionView({model: self.questionsList.get(id), answers: self.answers}).render().el);
               
               //Render the result
               if(!self.curResult){
