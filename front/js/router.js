@@ -31,14 +31,21 @@ define([
 
   //Add a close method to all views in backbone
   Backbone.View.prototype.close = function () {
+      console.debug("Closing view");
       if (this.beforeClose) {
           this.beforeClose();
       }
+      this.off();
       this.remove();
-      this.unbind();
   };
 
   var AppRouter = Backbone.Router.extend({
+    initialize: function(){
+      this.answers = new AnswersCollection();
+      this.answers.on('add', function(answerModel) {
+          answerModel.save();
+        }, this);
+    },
     routes: {
       '': 'welcome',
 	    'denied': 'denied',
@@ -66,11 +73,9 @@ define([
     //   });
     // },
     fetchAnswers: function(){
-      this.answers = new AnswersCollection();
       var self = this;
       this.answers.fetch({
         success: function(){
-          
           if(self.requestedId) self.question(self.requestedId);
         }
       });
@@ -88,9 +93,13 @@ define([
             if(self.questionsList.get(id)){
               
               // TODO Show something if the question already is answered
-              $("#content").html(new QuestionView({model: self.questionsList.get(id), answers: self.answers}).render().el);
+              if(self.curQuestionView){
+                self.curQuestionView.close();
+              }
+              self.curQuestionView = new QuestionView({model: self.questionsList.get(id), answers: self.answers}); 
+
+              $("#content").html(self.curQuestionView.render().el);
               
-              //Render the result
               if(!self.curResult){
                 self.curResult = $('#footer').html(new ResultView().render().el); 
               }
@@ -153,7 +162,6 @@ define([
   });
 
   var initialize = function(){
-	
 	FB.Event.subscribe('auth.statusChange', function(response) {
 		if(response.status == 'connected') {
 			console.log('FB init');

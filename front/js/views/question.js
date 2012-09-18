@@ -11,11 +11,8 @@ define([
 		template: _.template(questionTpl),
 		initialize: function(){
 			_.bindAll(this, "render");
-			this.model.bind("reset", this.render, this);
-			this.model.bind("change", this.render, this);
-			this.options.answers.on('add', function(answerModel) {
-			    answerModel.save();
-  			}, this);
+			this.model.on("reset", this.render, this);
+			this.model.on("change", this.render, this);
 		},
 		events: {
 			'click #submitQuestion': 'submit'
