@@ -10,15 +10,15 @@ define([
 			"text": "Första texten",
 			"options": [
 				{
-					"text": 'Alternativ 1',
+					"text": 'Fråga 1, Alternativ 1',
 					"value": 100
 				},
 				{
-					"text": 'Alternativ 2',
+					"text": 'Fråga 1, Alternativ 2',
 					"value": 80
 				},
 				{
-					"text": 'Alernativ 3',
+					"text": 'Fråga 1, Alernativ 3 - Dåligt',
 					"value": 60
 				}
 			],
@@ -30,19 +30,19 @@ define([
 			"text": "Andra texten",
 			"options": [
 				{
-					"text": 'Alternativ 1',
+					"text": 'Fråga 2, Alternativ 1',
 					"value": 100
 				},
 				{
-					"text": 'Alternativ 2',
+					"text": 'Fråga 2, Alternativ 2 -Dåligt',
 					"value": 80
 				},
 				{
-					"text": 'Alernativ 3',
+					"text": 'Fråga 2, Alernativ 3 -Dåligt',
 					"value": 60
 				}
 			],
-			"good_value": 80
+			"good_value": 90
 		}, 
 		{
 			"id": 3,
@@ -50,15 +50,15 @@ define([
 			"text": "Tredje texten",
 			"options": [
 				{
-					"text": 'Alternativ 1',
+					"text": 'Fråga 3 - Alternativ 1',
 					"value": 100
 				},
 				{
-					"text": 'Alternativ 2',
+					"text": 'Fråga 3 - Alternativ 2',
 					"value": 80
 				},
 				{
-					"text": 'Alernativ 3',
+					"text": 'Fråga 3 - Alernativ 3 - Dåligt',
 					"value": 60
 				}
 			],

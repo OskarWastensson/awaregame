@@ -177,7 +177,13 @@ function updateScore(req, res, next) {
 		'max': req.params.max
 	},
 	[], function(err, numberAffected, raw) {
-		res.send(req.body);
+		if(err) {
+			res.send(err);
+		} else if(numberAffected === 0) {
+			postScore(req, res, next);
+		} else {
+			getScore(req, res, next);
+		}
 	});
 }
 
