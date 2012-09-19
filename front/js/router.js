@@ -6,7 +6,7 @@ define([
   'views/header',
   'views/denied',
   // 'views/form',
-  'views/result',
+  'views/score',
   'collections/questions',
   'data/questions',
   'models/score',
@@ -22,7 +22,7 @@ define([
   HeaderView, 
   DeniedView, 
   // FormView, 
-  ResultView, 
+  ScoreView, 
 	QuestionsCollection, 
 	QuestionsData,
   ScoreModel,	
@@ -44,6 +44,10 @@ define([
   var AppRouter = Backbone.Router.extend({
     initialize: function(){
 	  this.score = new ScoreModel();
+	  this.scoreView = new ScoreView({
+		  model: this.score
+		});
+	  
 	  
       this.answers = new AnswersCollection();
       this.answers.on('add', function(answerModel) {
@@ -105,9 +109,8 @@ define([
 
               $("#content").html(self.curQuestionView.render().el);
               
-              if(!self.curResult){
-                self.curResult = $('#footer').html(new ResultView().render().el); 
-              }
+              $("#footer").html(self.scoreView.render().el); 
+              
             } else {
               console.debug("The question doesn't exist");
             }
