@@ -5,7 +5,6 @@ define([
   'views/welcome',
   'views/header',
   'views/denied',
-  // 'views/form',
   'views/result',
   'collections/questions',
   'data/questions',
@@ -20,7 +19,6 @@ define([
 	WelcomeView, 
   HeaderView, 
   DeniedView, 
-  // FormView, 
   ResultView, 
 	QuestionsCollection, 
 	QuestionsData, 
@@ -49,7 +47,6 @@ define([
     routes: {
       '': 'welcome',
 	    'denied': 'denied',
-      // 'questions': 'form',
       'questions/:id': 'question'
     },
     welcome: function(){
@@ -62,16 +59,6 @@ define([
         AwRouter.showView('#content', new DeniedView());
       });
     },
-    // form: function(){
-    //   var self = this;
-    //   this.fbLogin(function(){
-    //     self.before(function(){
-    //       this.questions = new QuestionsCollection(QuestionsData);
-    //       AwRouter.showView('#content', new FormView({collection: this.questions}));
-    //       AwRouter.showView('#footer', new ResultView());
-    //     });
-    //   });
-    // },
     fetchAnswers: function(){
       var self = this;
       this.answers.fetch({
@@ -96,8 +83,16 @@ define([
               if(self.curQuestionView){
                 self.curQuestionView.close();
               }
-              self.curQuestionView = new QuestionView({model: self.questionsList.get(id), answers: self.answers}); 
 
+              //Go to next question if the question is answered
+              console.debug(self.answers);
+              if(self.answers.get(id)){
+                  self.navigate('questions/' + (parseInt(id)+1), {trigger: true});
+                  return;
+              }
+
+              self.curQuestionView = new QuestionView({model: self.questionsList.get(id), answers: self.answers}); 
+              $("#content").html('');
               $("#content").html(self.curQuestionView.render().el);
               
               if(!self.curResult){
@@ -120,6 +115,7 @@ define([
           AwRouter.curView = view;
         }
       }
+      $(selector).html('');
       $(selector).html(view.render().el);
       
       return view;
