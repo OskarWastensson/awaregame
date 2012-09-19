@@ -50,6 +50,7 @@ define([
 	  
 	  
       this.answers = new AnswersCollection();
+	  this.answers.fetch();
       this.answers.on('add', function(answerModel) {
           answerModel.save();
 		  this.score.update(answerModel.attributes.value, this.questionsList.get(answerModel.id).max());
