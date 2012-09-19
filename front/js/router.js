@@ -9,6 +9,7 @@ define([
   'views/result',
   'collections/questions',
   'data/questions',
+  'models/score',
   'collections/answers',
   'views/question',
   'views/result'
@@ -23,7 +24,8 @@ define([
   // FormView, 
   ResultView, 
 	QuestionsCollection, 
-	QuestionsData, 
+	QuestionsData,
+  ScoreModel,	
   AnswersCollection,
   QuestionView,
   ResultView
@@ -41,9 +43,12 @@ define([
 
   var AppRouter = Backbone.Router.extend({
     initialize: function(){
+	  this.score = new ScoreModel();
+	  
       this.answers = new AnswersCollection();
       this.answers.on('add', function(answerModel) {
           answerModel.save();
+		  this.score.update(answerModel.attributes.value, this.questionsList.get(answerModel.id).max());
         }, this);
     },
     routes: {

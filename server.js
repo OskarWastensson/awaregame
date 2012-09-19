@@ -168,6 +168,9 @@ function postScore(req, res, next) {
 }
 
 function updateScore(req, res, next) {
+  
+  console.log('In update score');
+  
   Score.update( {
 	  'user': req.user.id, 
 	  'module': req.params.module
