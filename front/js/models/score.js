@@ -7,6 +7,7 @@ define([
 		defaults: {
 			'value': 0,
 			'max': 0,
+			// ScoreModel is a singleton - so this id value is to fool Backbone.
 			'id': 'single'
 		},
 		'url': 'http://localhost:8080/food/score',
