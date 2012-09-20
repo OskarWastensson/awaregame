@@ -108,16 +108,19 @@ define([
                       return;
                   }
 				  console.log('progress render:');
-                  $("#progress").html(self.progressView.render().el);
-					
-				  self.curQuestionView = new QuestionView({model: self.questionsList.get(id), answers: self.answers}); 
-                  $("#content").html('');
-                  $("#content").html(self.curQuestionView.render().el);
-                  $("#footer").html(self.scoreView.render().el);
+   
+			  $("#progress").html(self.progressView.render().el);
 
-              } else {
-                 console.debug("The question doesn't exist"); 
-              }
+              self.curQuestionView = new QuestionView({model: self.questionsList.get(id), answers: self.answers}); 
+              $("#content").html('');
+              $("#content").html(self.curQuestionView.render().el);
+              
+              $("#footer").html(self.scoreView.render().el); 
+              
+            } else {
+              console.debug("The question doesn't exist");
+            }
+
           } else {
             self.requestedId = id;
             self.fetchAnswers();
