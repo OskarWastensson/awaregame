@@ -12,7 +12,8 @@ define([
   'models/score',
   'collections/answers',
   'views/question',
-  'views/result'
+  'views/result',
+  'views/progress'
 
 ], function(
   $,
@@ -28,7 +29,8 @@ define([
   ScoreModel,	
   AnswersCollection,
   QuestionView,
-  ResultView
+  ResultView,
+  ProgressView
   ){
 
   //Add a close method to all views in backbone
@@ -43,18 +45,24 @@ define([
 
   var AppRouter = Backbone.Router.extend({
     initialize: function(){
+      
+	  this.questionsList = new QuestionsCollection(QuestionsData);
+
 	  this.score = new ScoreModel();
 	  this.scoreView = new ScoreView({
 		  model: this.score
 		});
 	  
-	  
       this.answers = new AnswersCollection();
-	  this.answers.fetch();
-      this.answers.on('add', function(answerModel) {
+	  this.answers.on('add', function(answerModel) {
           answerModel.save();
 		  this.score.update(answerModel.attributes.value, this.questionsList.get(answerModel.id).max());
         }, this);
+	  
+	  this.progressView = new ProgressView({
+		  collection: this.questionsList,
+		  answers: this.answers
+	  });
     },
     routes: {
       '': 'welcome',
@@ -99,8 +107,10 @@ define([
                       self.navigate('questions/' + (parseInt(id)+1), {trigger: true});
                       return;
                   }
-
-                  self.curQuestionView = new QuestionView({model: self.questionsList.get(id), answers: self.answers}); 
+				  console.log('progress render:');
+                  $("#progress").html(self.progressView.render().el);
+					
+				  self.curQuestionView = new QuestionView({model: self.questionsList.get(id), answers: self.answers}); 
                   $("#content").html('');
                   $("#content").html(self.curQuestionView.render().el);
                   $("#footer").html(self.scoreView.render().el);
