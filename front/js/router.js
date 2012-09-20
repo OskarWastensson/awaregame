@@ -74,6 +74,8 @@ define([
       var self = this;
       this.answers.fetch({
         success: function(){
+          console.debug("fetch collection");
+          self.fetchedAnswers = self.answers;
           if(self.requestedId) self.question(self.requestedId);
         }
       });
@@ -85,32 +87,26 @@ define([
           if(!self.questionsList){
             self.questionsList = new QuestionsCollection(QuestionsData);
           }
-          //Check if the question is answered
-          if(self.answers){
-            //Check if the question exist
+          if(typeof self.fetchedAnswers !== 'undefined'){
             if(self.questionsList.get(id)){
-              
-              // TODO Show something if the question already is answered
-              if(self.curQuestionView){
-                self.curQuestionView.close();
-              }
+                  if(self.curQuestionView){
+                    self.curQuestionView.close();
+                  }
 
-              //Go to next question if the question is answered
-              console.debug(self.answers);
-              if(self.answers.get(id)){
-                  self.navigate('questions/' + (parseInt(id)+1), {trigger: true});
-                  return;
-              }
+                  //Go to next question if the question is answered
+                  if(self.answers.get(id)){
+                      self.navigate('questions/' + (parseInt(id)+1), {trigger: true});
+                      return;
+                  }
 
-              self.curQuestionView = new QuestionView({model: self.questionsList.get(id), answers: self.answers}); 
-              $("#content").html('');
-              $("#content").html(self.curQuestionView.render().el);
-              
-              $("#footer").html(self.scoreView.render().el); 
-              
-            } else {
-              console.debug("The question doesn't exist");
-            }
+                  self.curQuestionView = new QuestionView({model: self.questionsList.get(id), answers: self.answers}); 
+                  $("#content").html('');
+                  $("#content").html(self.curQuestionView.render().el);
+                  $("#footer").html(self.scoreView.render().el);
+
+              } else {
+                 console.debug("The question doesn't exist"); 
+              }
           } else {
             self.requestedId = id;
             self.fetchAnswers();
