@@ -48,9 +48,7 @@ define([
 		  model: this.score
 		});
 	  
-	  
-      this.answers = new AnswersCollection();
-	  this.answers.fetch();
+    this.answers = new AnswersCollection();
       this.answers.on('add', function(answerModel) {
           answerModel.save();
 		  this.score.update(answerModel.attributes.value, this.questionsList.get(answerModel.id).max());
@@ -72,6 +70,7 @@ define([
       });
     },
     fetchAnswers: function(){
+      console.debug("fetch answers");
       var self = this;
       this.answers.fetch({
         success: function(){

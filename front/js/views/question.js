@@ -25,26 +25,30 @@ define([
 			var self = this;
 			var questionValue = parseInt($('input:radio[name=answer]:checked').val());
 
-			this.options.answers.add({
-				'id': this.model.get('id'),
-				'value': questionValue
-			});
-			$("#animation").removeClass("hidden");
+			if(questionValue !== 0){
+				this.options.answers.add({
+					'id': this.model.get('id'),
+					'value': questionValue
+				});
+				$("#animation").removeClass("hidden");
 
-			if(questionValue > 70){
-				$("#good").show();
-			} else {
-				$("#bad").show();
-			}
-
-			_.delay(function(){
-				$("#animation").addClass("hidden");
-				if(self.model.get('id') != QuestionsData.length){
-					AwRouter.navigate('questions/' + (self.model.get('id') + 1), true);
+				if(questionValue > 70){
+					$("#good").show();
 				} else {
-					console.debug("Show the total result");	
+					$("#bad").show();
 				}
-			}, 1000);
+
+				_.delay(function(){
+					$("#animation").addClass("hidden");
+					if(self.model.get('id') != QuestionsData.length){
+						AwRouter.navigate('questions/' + (self.model.get('id') + 1), true);
+					} else {
+						console.debug("Show the total result");	
+					}
+				}, 1000);
+			} else {
+				alert("You haven't answered the question!");
+			}
 			return false;
 		}
 	});
