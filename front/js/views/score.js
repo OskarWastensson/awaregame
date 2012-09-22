@@ -14,9 +14,6 @@ define([
 		},
 		render: function(){
 			this.$el.html(this.template(this.model.toJSON()));
-			// _.delay(function(){
-			// 	AwRouter.showView('#content', new FormView());
-			// }, 5000);
 			return this;
 		},
 		events: {

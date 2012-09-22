@@ -36,6 +36,7 @@ define([
 					$("#good").show();
 				} else {
 					$("#bad").show();
+					AwRouter.navigate('result/' + (self.model.get('id') + 1), true);	
 				}
 
 				_.delay(function(){

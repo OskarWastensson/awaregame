@@ -7,30 +7,27 @@ define([
   'views/denied',
   'views/result',
   'views/score',
-  'collections/questions',
-  'data/questions',
-  'models/score',
-  'collections/answers',
   'views/question',
-  'views/result',
-  'views/progress'
-
+  'views/progress',
+  'collections/questions',
+  'models/settings',
+  'models/score',
+  'collections/answers'
 ], function(
   $,
    _,
   Backbone, 
-	WelcomeView, 
+  WelcomeView, 
   HeaderView, 
   DeniedView, 
   ResultView, 
   ScoreView, 
-	QuestionsCollection, 
-	QuestionsData,
-  ScoreModel,	
-  AnswersCollection,
   QuestionView,
-  ResultView,
-  ProgressView
+  ProgressView,
+  QuestionsCollection, 
+  SettingsModel,
+  ScoreModel,	
+  AnswersCollection
   ){
 
   //Add a close method to all views in backbone
@@ -46,8 +43,9 @@ define([
   var AppRouter = Backbone.Router.extend({
     initialize: function(){
       
-	  this.questionsList = new QuestionsCollection(QuestionsData);
-
+	  this.questionsList = new QuestionsCollection();
+	  this.settings = new SettingsModel();
+	  
 	  this.score = new ScoreModel();
 	  this.scoreView = new ScoreView({
 		  model: this.score
@@ -63,11 +61,18 @@ define([
 		  collection: this.questionsList,
 		  answers: this.answers
 	  });
+	  
+	  this.resultView = new ResultView({
+		  collection: this.questionsList,
+		  score: this.score,
+		  settings: this.settings
+	  });
     },
     routes: {
       '': 'welcome',
 	    'denied': 'denied',
-      'questions/:id': 'question'
+      'questions/:id': 'question',
+	  'result': 'result'
     },
     welcome: function(){
 	    this.before(function(){
@@ -97,6 +102,13 @@ define([
           if(!self.questionsList){
             self.questionsList = new QuestionsCollection(QuestionsData);
           }
+		  console.log('Questionlength ');
+		  console.log(id);
+		  console.log(self.questionsList.length);
+		  if(id > self.questionsList.length) {
+			  self.navigate('result', {trigger: true});
+			  return;
+		  }
           if(typeof self.fetchedAnswers !== 'undefined'){
             if(self.questionsList.get(id)){
                   if(self.curQuestionView){
@@ -129,6 +141,9 @@ define([
         });
       });
     },
+	result: function() {
+		$('#content').html(this.resultView.render().el);
+	},
     showView: function(selector, view){
       if(selector !== '#header'){
         if(AwRouter.curView){

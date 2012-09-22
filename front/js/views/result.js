@@ -12,7 +12,10 @@ define([
 			_.bindAll(this, "render");
 		},
 		render: function(){
-			this.$el.html(this.template);
+			this.$el.html(this.template({
+				questions: this.collection.toJSON(),
+				score: this.options.score.toJSON()
+			}));
 			return this;
 		}
 	});
