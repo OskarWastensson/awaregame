@@ -63,10 +63,10 @@ define([
 	  });
 	  
 	  this.resultView = new ResultView({
-		  collection: this.questionsList,
-		  score: this.score,
+		  model: this.score,
 		  settings: this.settings
 	  });
+	  
     },
     routes: {
       '': 'welcome',

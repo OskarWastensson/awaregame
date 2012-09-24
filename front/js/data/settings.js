@@ -10,16 +10,23 @@ define([
 			"welcomeText":
 				"Välkommen till Matspelet. Svara på några enkla frågor om " +
 				"dina matvanor och få reda på din miljöbelastning.",
-			"goodText":
-				"Dina matvanor är ganska bra ur miljösynpunkt. Bra jobbat!",
-			"goodLevel": 200,
-			"okText":
-				"Ja, det finns mycket för dig att jobba på, men på det hela " +
-				"taget finns det de som är värre an du.",
-			"okLevel": 100,
-			"badText":
-				"USCH USCH Vad dålig du är!"
-				
+			"levels": [
+				{
+					"value": 0,
+					"title": "Dåligt resultat",
+					"text": "Det här är texten ska komma om man svarar dåligt."
+				},
+				{
+					"value": 30,
+					"title": "Mjäkigt resultat",
+					"text": "Det här är texten ska komma om man svarar mallandåligt."
+				},
+				{
+					"value": 70,
+					"title": "Bra resultat",
+					"text": "Det här är texten ska komma om man svarar bra."
+				}
+			]	
 		};
 	return Settings;
 });

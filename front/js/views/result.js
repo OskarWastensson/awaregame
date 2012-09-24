@@ -13,10 +13,22 @@ define([
 		},
 		render: function(){
 			this.$el.html(this.template({
-				questions: this.collection.toJSON(),
-				score: this.options.score.toJSON()
+				message: this.message(),
+				score: this.model.toJSON()	
 			}));
 			return this;
+		},
+		message: function() {
+			var message, 
+				levels = this.options.settings.attributes.levels,
+				score = this.model.attributes;
+			
+			$.each(levels, function(i, level) {
+				if(level.value / level.max > score.value) {
+					message = level;
+				}
+			});
+			return message;
 		}
 	});
 	return ResultView;

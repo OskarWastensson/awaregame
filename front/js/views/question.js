@@ -35,8 +35,7 @@ define([
 				if(questionValue > 70){
 					$("#good").show();
 				} else {
-					$("#bad").show();
-					AwRouter.navigate('result/' + (self.model.get('id') + 1), true);	
+					$("#bad").show();	
 				}
 
 				_.delay(function(){
@@ -44,7 +43,7 @@ define([
 					if(self.model.get('id') != QuestionsData.length){
 						AwRouter.navigate('questions/' + (self.model.get('id') + 1), true);
 					} else {
-						console.debug("Show the total result");	
+						AwRouter.navigate('result', { trigger: true });
 					}
 				}, 1000);
 			} else {
