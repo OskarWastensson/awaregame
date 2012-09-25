@@ -16,10 +16,10 @@ define([
 			return this;
 		},
 		events: {
-			'click #startGame': 'startGame',
+			'click #startGame': 'startGame'
 		},
 		startGame: function(){
-			AwRouter.navigate("questions/1", true);
+			AwRouter.fbLogin(AwRouter.afterLogin);
 		}
 	});
 	return WelcomeView;

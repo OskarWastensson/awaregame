@@ -7,6 +7,7 @@ define([
 			"name": "Mat",
 			"machineName": "food",
 			"facebookAppId": 416322788424429,
+			"restAPI": "localhost:8080/",
 			"welcomeText":
 				"Välkommen till Matspelet. Svara på några enkla frågor om " +
 				"dina matvanor och få reda på din miljöbelastning.",

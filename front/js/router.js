@@ -29,7 +29,7 @@ define([
   ScoreModel,	
   AnswersCollection
   ){
-
+  var self = this;
   //Add a close method to all views in backbone
   Backbone.View.prototype.close = function () {
       console.debug("Closing view");
@@ -42,20 +42,22 @@ define([
 
   var AppRouter = Backbone.Router.extend({
     initialize: function(){
-      
+      this.loadcounter = 0;
 	  this.questionsList = new QuestionsCollection();
 	  this.settings = new SettingsModel();
 	  
 	  this.score = new ScoreModel();
+	  
 	  this.scoreView = new ScoreView({
 		  model: this.score
 		});
 	  
-    this.answers = new AnswersCollection();
-    this.answers.on('add', function(answerModel) {
+      this.answers = new AnswersCollection();
+      this.answers.on('add', function(answerModel) {
         answerModel.save();
-	  this.score.update(answerModel.attributes.value, this.questionsList.get(answerModel.id).max());
+	    this.score.update(answerModel.attributes.value, this.questionsList.get(answerModel.id).max());
       }, this);
+	  
 	  
 	  this.progressView = new ProgressView({
 		  collection: this.questionsList,
@@ -79,32 +81,47 @@ define([
         AwRouter.showView('#content', new WelcomeView());
       });
     },
+	afterLogin: function() {
+		// Can't get self or this right!'
+		var self = AwRouter;
+		self.score.fetch({
+		  success: function() {
+			if(self.bothLoaded()) {
+		      self.afterLoad();
+			}		
+		  }
+		});
+		self.answers.fetch({
+		  success: function() {
+			if(self.bothLoaded()) {
+				self.afterLoad();
+			}
+		  }
+		});
+	},
+	bothLoaded: function () {
+	  var self = AwRouter;
+	  self.loadcounter += 1;
+	  return self.loadcounter === 2;
+	},
+	afterLoad: function () {
+	  var self = AwRouter;
+	  self.fetchedAnswers = self.answers;
+	  self.question(self.answers.length + 1);
+	},
     denied: function(){
       this.before(function(){
         AwRouter.showView('#content', new DeniedView());
-      });
-    },
-    fetchAnswers: function(){
-      console.debug("fetch answers");
-      var self = this;
-      this.answers.fetch({
-        success: function(){
-          console.debug("fetch collection");
-          self.fetchedAnswers = self.answers;
-          if(self.requestedId) self.question(self.requestedId);
-        }
       });
     },
     question: function(id){
       var self = this;
       this.before(function(){
         self.fbLogin(function(){
-          if(!self.questionsList){
+          self.score.fetch();
+		  if(!self.questionsList){
             self.questionsList = new QuestionsCollection(QuestionsData);
           }
-		  console.log('Questionlength ');
-		  console.log(id);
-		  console.log(self.questionsList.length);
 		  if(id > self.questionsList.length) {
 			  self.navigate('result', {trigger: true});
 			  return;
@@ -201,9 +218,8 @@ define([
 			// Alway send along FB signed request with ajax calls to backend
 			$.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
 				var data;
-				console.log('prefiltering');
 				options.url = options.url += '?code=' + fbAuth.signedRequest;
-			});	
+			});
 		}
 	});
 	
