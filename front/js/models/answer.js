@@ -1,14 +1,15 @@
 define([
 	'jQuery',
   	'Underscore',
-  	'Backbone'
-], function($, _, Backbone){
+  	'Backbone',
+	'data/settings'
+], function($, _, Backbone, settings){
 	var AnswerModel = Backbone.Model.extend({
 		defaults: {
 			'value': null,
 			'id': null
 		},
-		url: 'http://localhost:8080/food/answers'
+		url: 'http://' + settings.restAPI + settings.machineName + '/answers'
 	});
 	return AnswerModel;
 });

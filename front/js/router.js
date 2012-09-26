@@ -10,7 +10,6 @@ define([
   'views/question',
   'views/progress',
   'collections/questions',
-  'models/settings',
   'models/score',
   'collections/answers'
 ], function(
@@ -25,7 +24,6 @@ define([
   QuestionView,
   ProgressView,
   QuestionsCollection, 
-  SettingsModel,
   ScoreModel,	
   AnswersCollection
   ){
@@ -44,7 +42,6 @@ define([
     initialize: function(){
       this.loadcounter = 0;
 	  this.questionsList = new QuestionsCollection();
-	  this.settings = new SettingsModel();
 	  
 	  this.score = new ScoreModel();
 	  
@@ -65,8 +62,7 @@ define([
 	  });
 	  
 	  this.resultView = new ResultView({
-		  model: this.score,
-		  settings: this.settings
+		  model: this.score
 	  });
 	  
     },
