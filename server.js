@@ -163,7 +163,20 @@ function postScore(req, res, next) {
   score.max = req.params.max;
   score.user = req.user.id;
   score.save(function () {
-    res.send(req.body);
+    if(req.params.publish) {
+		// Publish score to facebook game api
+		restler.post('https://graph.facebook.com/' + score.user + '/scores',
+			{ query: { 
+					'access_token': req.facebook.access_token,
+					'score': score.value / score.max
+				}} 
+		)
+		.on('complete', function(data) {
+			res.send(req.body);
+		});
+	} else {
+		res.send(req.body);
+	}
   });
 }
 

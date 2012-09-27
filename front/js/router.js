@@ -11,6 +11,7 @@ define([
   'views/progress',
   'collections/questions',
   'models/score',
+  'models/highscore',
   'collections/answers'
 ], function(
   $,
@@ -24,7 +25,8 @@ define([
   QuestionView,
   ProgressView,
   QuestionsCollection, 
-  ScoreModel,	
+  ScoreModel,
+  HighScoreModel,
   AnswersCollection
   ){
   var self = this;
@@ -44,6 +46,7 @@ define([
 	  this.questionsList = new QuestionsCollection();
 	  
 	  this.score = new ScoreModel();
+	  this.highScores = new HighScoreModel();
 	  
 	  this.scoreView = new ScoreView({
 		  model: this.score
@@ -96,12 +99,12 @@ define([
 		});
 	},
 	bothLoaded: function () {
-	  var self = AwRouter;
+	  var self = this; 
 	  self.loadcounter += 1;
 	  return self.loadcounter === 2;
 	},
 	afterLoad: function () {
-	  var self = AwRouter;
+	  var self = this; 
 	  self.fetchedAnswers = self.answers;
 	  self.question(self.answers.length + 1);
 	},
@@ -114,8 +117,7 @@ define([
       var self = this;
       this.before(function(){
         self.fbLogin(function(){
-          self.score.fetch();
-		  if(!self.questionsList){
+          if(!self.questionsList){
             self.questionsList = new QuestionsCollection(QuestionsData);
           }
 		  if(id > self.questionsList.length) {
@@ -155,7 +157,17 @@ define([
       });
     },
 	result: function() {
-		$('#content').html(this.resultView.render().el);
+		var self = this;
+		this.score.publish({success: function () {
+			console.log('after publish');
+			self.highScores.fetch({
+			
+			success: function(model, data) {
+				
+				$('#content').html(self.resultView.render().el);
+			}
+			})
+		}});
 	},
     showView: function(selector, view){
       if(selector !== '#header'){

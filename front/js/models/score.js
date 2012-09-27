@@ -29,6 +29,10 @@ define([
 			});
 			
 			return message;
+		},
+		publish: function(options) {
+			console.log('publish');
+			this.save({publish: true}, options);
 		}
 	});
 	return ScoreModel;
