@@ -19,6 +19,7 @@ define([
 			'click #startGame': 'startGame',
 		},
 		startGame: function(){
+			console.debug(this.collection);
 			AwRouter.navigate("questions/1", true);
 		}
 	});

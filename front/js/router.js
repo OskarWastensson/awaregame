@@ -69,17 +69,7 @@ define([
 	    'denied': 'denied',
       'questions/:id': 'question'
     },
-    welcome: function(){
-	    this.before(function(){
-        AwRouter.showView('#content', new WelcomeView());
-      });
-    },
-    denied: function(){
-      this.before(function(){
-        AwRouter.showView('#content', new DeniedView());
-      });
-    },
-    fetchAnswers: function(){
+    fetchAnswers: function(callback){
       console.debug("fetch answers");
       var self = this;
       this.answers.fetch({
@@ -87,7 +77,21 @@ define([
           console.debug("fetch collection");
           self.fetchedAnswers = self.answers;
           if(self.requestedId) self.question(self.requestedId);
+          if(callback){
+            callback();
+          }
         }
+      });
+    },
+    welcome: function(){
+      var self = this;
+	    this.before(function(){
+        AwRouter.showView('#content', new WelcomeView());
+      });
+    },
+    denied: function(){
+      this.before(function(){
+        AwRouter.showView('#content', new DeniedView());
       });
     },
     question: function(id){
