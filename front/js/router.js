@@ -42,7 +42,7 @@ define([
 
   var AppRouter = Backbone.Router.extend({
     initialize: function(){
-      this.loadcounter = 0;
+    this.loadcounter = 0;
 	  this.questionsList = new QuestionsCollection();
 	  
 	  this.score = new ScoreModel();
@@ -58,7 +58,6 @@ define([
 	    this.score.update(answerModel.attributes.value, this.questionsList.get(answerModel.id).max());
       }, this);
 	  
-	  
 	  this.progressView = new ProgressView({
 		  collection: this.questionsList,
 		  answers: this.answers
@@ -73,7 +72,7 @@ define([
       '': 'welcome',
 	    'denied': 'denied',
       'questions/:id': 'question',
-	  'result': 'result'
+			'result': 'result'
     },
     welcome: function(){
 	    this.before(function(){
@@ -85,16 +84,18 @@ define([
 		var self = AwRouter;
 		self.score.fetch({
 		  success: function() {
-			if(self.bothLoaded()) {
+				console.log('Fetched score');
+				console.log(self.score)
+				if(self.bothLoaded()) {
 		      self.afterLoad();
-			}		
+				}		
 		  }
 		});
 		self.answers.fetch({
-		  success: function() {
-			if(self.bothLoaded()) {
-				self.afterLoad();
-			}
+			success: function() {
+				if(self.bothLoaded()) {
+					self.afterLoad();
+				}
 		  }
 		});
 	},
@@ -104,15 +105,16 @@ define([
 	  return self.loadcounter === 2;
 	},
 	afterLoad: function () {
-	  var self = this; 
+	  console.log(this.score)
+		var self = this; 
 	  self.fetchedAnswers = self.answers;
 	  self.question(self.answers.length + 1);
 	},
-    denied: function(){
-      this.before(function(){
-        AwRouter.showView('#content', new DeniedView());
-      });
-    },
+  denied: function(){
+    this.before(function(){
+      AwRouter.showView('#content', new DeniedView());
+    });
+  },
     question: function(id){
       var self = this;
       this.before(function(){
@@ -162,8 +164,8 @@ define([
 			console.log('after publish');
 			self.highScores.fetch({
 			
-			success: function(model, data) {
-				
+				success: function(model, data) {
+				console.log(data);
 				$('#content').html(self.resultView.render().el);
 			}
 			})
@@ -212,7 +214,7 @@ define([
 			} else {
 				console.log('User cancelled login or did not fully authorize.');
 			}
-			}, {scope: 'friends_about_me'});
+			}, {scope: 'publish_actions'});
 		}
 	 });
     }

@@ -32,6 +32,7 @@ define([
 		},
 		publish: function(options) {
 			console.log('publish');
+			console.log(this);
 			this.save({publish: true}, options);
 		}
 	});

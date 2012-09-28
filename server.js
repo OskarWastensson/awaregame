@@ -71,50 +71,15 @@ function setHeaders(req, res, next) {
 
 
 function getScore(req, res, next) {
-  Score.find( {
+  console.log('get score');
+	//console.log(req);
+	Score.findOne( {
 	  'user': req.user.id, 
 	  'module': req.params.module
-	})
-	.execFind(function (arr,data) {
-	res.send(data);
-  });  
-}
-
-function getHighScore(req, res, next) {
-	try{
-		// Fetch friends from facebook
-		restler.get('https://graph.facebook.com/me/friends',
-			{ query: { 
-					'access_token': req.facebook.access_token,
-					'fields': 'installed',
-					'limit': 9999
-				}} 
-		)
-		.on('complete', function(data) {
-			// Keep only friends with installed = true
-			var i, friendsUsing = [];
-			var result = JSON.parse(data);
-			if(result.data) {
-				for(i = 0; i < result.data.length; i++) {
-					if(result.data[i].installed) {
-						friendsUsing.push(result.data[i].id);
-					}
-				}
-			}
-			friendsUsing.push(req.user.id);
-			
-			// Get score for theese friends
-			Score.find( {
-				'user': { $in : friendsUsing },
-				'module': req.params.module
-				})
-				.execFind(function (arr,data) {
-					res.send(data);
-			});
-		});
-	} catch(err) {
-		res.send(err);
-	}	
+	}, function (err, data) {
+		console.log(data);
+		res.send(data);
+  });
 }
 
 function postAnswer(req, res, next) {
@@ -151,7 +116,9 @@ function getAnswers(req, res, next) {
 		'id': 1
 	})
 	.execFind(function (arr,data) {
-	res.send(data);
+			console.log('get answers');
+			console.log(data);
+			res.send(data);
   });	  
 }
 
@@ -162,22 +129,7 @@ function postScore(req, res, next) {
   score.value = req.params.value;
   score.max = req.params.max;
   score.user = req.user.id;
-  score.save(function () {
-    if(req.params.publish) {
-		// Publish score to facebook game api
-		restler.post('https://graph.facebook.com/' + score.user + '/scores',
-			{ query: { 
-					'access_token': req.facebook.access_token,
-					'score': score.value / score.max
-				}} 
-		)
-		.on('complete', function(data) {
-			res.send(req.body);
-		});
-	} else {
-		res.send(req.body);
-	}
-  });
+  score.save(scorePublish(req, res, next));
 }
 
 function updateScore(req, res, next) {
@@ -195,9 +147,37 @@ function updateScore(req, res, next) {
 		} else if(numberAffected === 0) {
 			postScore(req, res, next);
 		} else {
-			getScore(req, res, next);
+			if(req.params.publish) {
+				scorePublish(req, res, next);
+			} else {
+				getScore(req, res, next);
+			}
+			
 		}
 	});
+}
+
+function scorePublish(req, res, next) {
+	if(req.params.publish) {
+		console.log('publishing score ' + req.params.value * 100 / req.params.max);
+		// Publish score to facebook game apis
+		restler.post('https://graph.facebook.com/' + req.user.id + '/scores',
+		  { query: { 
+		    'access_token': req.facebook.access_token,
+				'score': req.params.value * 100 / req.params.max
+				}} 
+		)
+		.on('complete', function(data) {
+			if(data.error) {
+				res.send(data.error);
+			} else {
+				console.log(data);
+				getScore(req, res, next);
+			}
+		});
+	} else {
+		getScore(req, res, next);
+	}
 }
 
 // Set up our routes and start the server
@@ -211,7 +191,6 @@ bServer.put('/:module/answers', postAnswer);
 bServer.get('/:module/score', getScore);
 bServer.post('/:module/score', postScore);
 bServer.put('/:module/score', updateScore);
-bServer.get('/:module/highScore', getHighScore);
 // Start server
 bServer.listen(8080, function() {
   console.log('%s listening at %s', bServer.name, bServer.url);
