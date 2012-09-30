@@ -64,7 +64,8 @@ define([
 	  });
 	  
 	  this.resultView = new ResultView({
-		  model: this.score
+		  model: this.score,
+			highScores: this.highScores
 	  });
 	  
     },
@@ -161,11 +162,8 @@ define([
 	result: function() {
 		var self = this;
 		this.score.publish({success: function () {
-			console.log('after publish');
 			self.highScores.fetch({
-			
 				success: function(model, data) {
-				console.log(data);
 				$('#content').html(self.resultView.render().el);
 			}
 			})

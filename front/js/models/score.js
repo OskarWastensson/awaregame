@@ -23,7 +23,6 @@ define([
 			message = settings.levels[0];
 			$.each(settings.levels, function(i, level) {
 				if(level.value < self.attributes.value * 100 / self.attributes.max) {
-					console.log(level);
 					message = level;
 				}
 			});
@@ -32,7 +31,6 @@ define([
 		},
 		publish: function(options) {
 			console.log('publish');
-			console.log(this);
 			this.save({publish: true}, options);
 		}
 	});
