@@ -33,9 +33,14 @@ var restler = require('restler');
 // Require Moongoose
 var mongoose = require('mongoose');
 var config = require('./config');
+var connectString;
 
-
-db = mongoose.connect(config.creds.mongoose_auth),
+if(MONGOHQ_URL) {
+	connectString = MONGOHQ_URL;
+} else {
+	connectString = config.creds.mongoose_auth;
+}
+db = mongoose.connect(connectString),
 Schema = mongoose.Schema;  
 
 // Create schema for our data
