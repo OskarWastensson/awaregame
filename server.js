@@ -32,12 +32,12 @@ var restler = require('restler');
 
 // Require Moongoose
 var mongoose = require('mongoose');
-var config = require('./config');
 var connectString;
 
-if(MONGOHQ_URL) {
+if(typeof MONGOHQ_URL != 'undefined') {
 	connectString = MONGOHQ_URL;
 } else {
+	var config = require('./config');
 	connectString = config.creds.mongoose_auth;
 }
 db = mongoose.connect(connectString),
