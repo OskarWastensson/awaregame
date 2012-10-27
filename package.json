@@ -6,7 +6,7 @@
 	"name"        : "awaregame",
 	"version"     : "0.0.1",
 	"dependencies": {
-		"async"          : "0.1.22",
+		"async"          : "0.1.x",
 //		"b64url"         : "1.0.3",
 //		"bunyan"         : "0.10.0",
 //		"byline"         : "2.0.2",
