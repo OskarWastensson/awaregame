@@ -24,5 +24,8 @@
 //		"semver"         : "1.0.14",
 //		"send"           : "0.0.4",
 //		"util"           : "0.4.9"
-	}
+	},
+	"bundleDependencies" : [
+		'async'
+	]
 }
