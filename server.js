@@ -16,7 +16,7 @@ http.createServer(function (request, response) {
 }).listen(8888);
 
 console.log('Static server listening on port 8888');
-
+/*
 // ############################################
 // #  Backend server at :8080                 #
 // ############################################
@@ -32,10 +32,15 @@ var restler = require('restler');
 
 // Require Moongoose
 var mongoose = require('mongoose');
-var config = require('./config');
+var connectString;
 
-
-db = mongoose.connect(config.creds.mongoose_auth),
+if(typeof MONGOHQ_URL != 'undefined') {
+	connectString = MONGOHQ_URL;
+} else {
+	var config = require('./config');
+	connectString = config.creds.mongoose_auth;
+}
+db = mongoose.connect(connectString),
 Schema = mongoose.Schema;  
 
 // Create schema for our data
@@ -195,3 +200,5 @@ bServer.put('/:module/score', updateScore);
 bServer.listen(8080, function() {
   console.log('%s listening at %s', bServer.name, bServer.url);
 });
+
+*/

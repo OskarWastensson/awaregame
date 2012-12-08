@@ -15,7 +15,8 @@ define([
 			
 			this.$el.html(this.template({
 				message: this.model.message(),
-				score: this.model.toJSON()	
+				score: this.model.toJSON(),
+				highScores: this.options.highScores.toJSON()
 			}));
 			return this;
 		}

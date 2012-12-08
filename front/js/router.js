@@ -64,7 +64,8 @@ define([
 	  });
 	  
 	  this.resultView = new ResultView({
-		  model: this.score
+		  model: this.score,
+			highScores: this.highScores
 	  });
 	  
     },
@@ -163,19 +164,16 @@ define([
         });
       });
     },
-  	result: function() {
-  		var self = this;
-  		this.score.publish({success: function () {
-  			console.log('after publish');
-  			self.highScores.fetch({
-  			
-  				success: function(model, data) {
-  				console.log(data);
-  				$('#content').html(self.resultView.render().el);
-  			}
-  			})
-  		}});
-  	},
+	result: function() {
+		var self = this;
+		this.score.publish({success: function () {
+			self.highScores.fetch({
+				success: function(model, data) {
+				$('#content').html(self.resultView.render().el);
+			}
+			})
+		}});
+	},
     showView: function(selector, view){
       if(selector !== '#header'){
         if(AwRouter.curView){

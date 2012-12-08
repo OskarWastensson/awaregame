@@ -34,13 +34,32 @@ define(['../js/data/settings'], function(settings){
 						channelUrl : document.domain + '/channel.html', // Channel File
 						status     : true, // check login status
 						cookie     : true, // enable cookies to allow the server to access the session
-						xfbml      : true  // parse XFBML
+						xfbml      : true,  // parse XFBML
+						frictionlessRequests: true
 					});
 				}
 				injectScript(name);
+			
 			}
 		}
 	};
 });
 
+function sendRequestToRecipients() {
+	var user_ids = document.getElementsByName("user_ids")[0].value;
+	FB.ui({method: 'apprequests',
+		message: 'My Great Request',
+		to: user_ids
+	}, requestCallback);
+}
+
+function sendRequestViaMultiFriendSelector() {
+	FB.ui({method: 'apprequests',
+		message: 'My Great Request'
+	}, requestCallback);
+}
+
+function requestCallback(response) {
+  
+}
 
