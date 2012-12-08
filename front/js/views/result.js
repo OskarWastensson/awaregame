@@ -12,7 +12,11 @@ define([
 			_.bindAll(this, "render");
 		},
 		render: function(){
-			this.$el.html(this.template);
+			
+			this.$el.html(this.template({
+				message: this.model.message(),
+				score: this.model.toJSON()	
+			}));
 			return this;
 		}
 	});

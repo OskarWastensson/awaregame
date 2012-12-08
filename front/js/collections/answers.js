@@ -2,11 +2,12 @@ define([
 	'jQuery',
   	'Underscore',
   	'Backbone',
-	'models/answer'
-], function($, _, Backbone, AnswerModel){	
+	'models/answer',
+	'data/settings'
+], function($, _, Backbone, AnswerModel, settings){	
 	var AnswersCollection = Backbone.Collection.extend({
 		model: AnswerModel,
-		url: 'http://localhost:8080/food/answers'
+		url: 'http://' + settings.restAPI + settings.machineName + '/answers'
 	});
 
 	return AnswersCollection;

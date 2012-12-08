@@ -6,7 +6,7 @@
 * 
 * modified by Oskar Wastensson to suit facebook SDK
 */
-define(function(){
+define(['../js/data/settings'], function(settings){
 
     function injectScript(src){
 		var s, t;
@@ -30,8 +30,8 @@ define(function(){
                 window.fbAsyncInit = function() {
 					onLoad(name);
 					FB.init({
-						appId      : '416322788424429', // App ID
-						channelUrl : '//localhost:8888/channel.html', // Channel File
+						appId      : settings.facebookAppId,
+						channelUrl : document.domain + '/channel.html', // Channel File
 						status     : true, // check login status
 						cookie     : true, // enable cookies to allow the server to access the session
 						xfbml      : true  // parse XFBML

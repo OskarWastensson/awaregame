@@ -16,11 +16,18 @@ define([
 			return this;
 		},
 		events: {
-			'click #startGame': 'startGame',
+			'click #startGame': 'startGame'
 		},
 		startGame: function(){
-			console.debug(this.collection);
 			AwRouter.navigate("questions/1", true);
+
+			function test1(){
+				console.debug("test1 func");
+			}
+
+
+			AwRouter.fbLogin(AwRouter.afterLogi, [test1]);
+			// AwRouter.fbLogin(AwRouter.afterLogin);
 		}
 	});
 	return WelcomeView;
