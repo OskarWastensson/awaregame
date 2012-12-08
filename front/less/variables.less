@@ -1,0 +1,38 @@
+@base-font: "Trebuchet MS", sans-serif;
+@heading-font: Georgia, serif;
+@base-font-style: 14px;
+
+.gradient (@from, @to) {
+	background: #999; /* for non-css3 browsers */
+
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=@from, endColorstr=@to); /* for IE */
+
+	/* Safari 4+, Chrome 1-9 */
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(@from), to(@to));
+
+	/* Safari 5.1+, Mobile Safari, Chrome 10+ */
+	background-image: -webkit-linear-gradient(top, @from, @to); 
+
+	/* Firefox 3.6+ */
+	background-image: -moz-linear-gradient(top, @from, @to);
+
+	/* IE 10+ */
+	background-image: -ms-linear-gradient(top, @from, @to);
+
+	/* Opera 11.10+ */
+	background-image: -o-linear-gradient(top, @from, @to);
+}
+.border-radius (@radius: 5px) {
+	-webkit-border-radius: @radius;
+	-moz-border-radius: @radius;
+	-ms-border-radius: @radius;
+	-o-border-radius: @radius;
+	border-radius: @radius;
+}
+
+.box-shadow (@x: 1px, @y: 1px, @blur: 5px, @color: #bbb){
+	-webkit-box-shadow: @x @y @blur @color;
+    -moz-box-shadow: @x @y @blur @color;
+    box-shadow: @x @y @blur @color;
+    -o-box-shadow: @x @y @blur @color;
+}
