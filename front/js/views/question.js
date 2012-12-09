@@ -33,10 +33,20 @@ define([
 				$("#animation").removeClass("hidden");
 
 				if(questionValue > 70){
-					$("#good").show();
+					imageSrc ="images/good.gif";
+					// $("#animation").html('<img src="images/good.gif" />');// $("#good").show();
 				} else {
-					$("#bad").show();	
+					imageSrc ="images/bad.gif";
+					// $("#animation").html('<img src="images/bad.gif" />');
+					// $("#bad").show();	
 				}
+
+				var image = new Image();
+				image.src = imageSrc;
+
+				$("#animation").html(image);
+
+				image = "";
 
 				_.delay(function(){
 					$("#animation").addClass("hidden");
@@ -45,7 +55,7 @@ define([
 					} else {
 						AwRouter.navigate('result', { trigger: true });
 					}
-				}, 1000);
+				}, 10000);
 			} else {
 				alert("You haven't answered the question!");
 			}
