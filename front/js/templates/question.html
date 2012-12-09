@@ -1,6 +1,6 @@
-<form>
 	<h1><%= title %></h1>
 	<p><%= text %></p>
+	<form id="questions-form">
 	<p><input type="radio" name="answer" value="0" checked="checked">
 		<label>Välj alternativ</label>
 	</p>
@@ -11,7 +11,7 @@
 			<label><%= option.text %></label>
 		</p>
 	<% } %>
-	<button id="submitQuestion">Submit question</button>
+	<button id="submitQuestion">Skicka</button>
 </form>
 <div id="animation" class="hidden">
 	<div id="good">

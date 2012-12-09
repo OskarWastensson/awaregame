@@ -8,7 +8,7 @@ body {
 }
 h1 {
 	font-size: 24px;
-	margin-bottom: 5px;
+	margin-bottom: 15px;
 	color: #333;
 }
 h1, h2, h3 {
@@ -22,7 +22,7 @@ input, textarea, button {
 }
 
 .button {
-	padding: 10px 15px;
+	padding: 10px 20px;
 	border: none;
 	line-height: 1;
 	text-transform: uppercase;
@@ -63,14 +63,28 @@ input[type="button"]:hover {
 
 /* Header */
 #header {
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 	overflow: auto;
 	border-bottom: 1px solid #ccc;
 	padding-bottom: 10px;
 }
+
+.welcomeText {
+	margin-bottom: 20px;
+}
+
+/* Main */
+#main {
+	position: relative;
+}
+
+#questions-form {
+	margin-top: 20px;
+}
+
 #inviteButton {
 	float: right;
-	padding: 7px 10px;
+	padding: 7px 14px;
 	font-size: 12px;
 }
 
@@ -96,9 +110,17 @@ input[type="button"]:hover {
 	margin-top: 20px;
 }
 
+#progress {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
 #progress .score {
-	margin-bottom: 10px;
 	font-size: 15px;
+	text-align: right;
+	color: #444;
+	letter-spacing: 2px;
+	text-transform: uppercase;
 }
 #footer .score {
 	border-top: 1px solid #ccc;
@@ -135,5 +157,5 @@ input[type="button"]:hover {
 
 /* Footer */
 #footer {
-	margin-top: 30px;
+	margin-top: 20px;
 }
