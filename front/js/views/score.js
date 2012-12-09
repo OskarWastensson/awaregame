@@ -2,7 +2,7 @@ define([
 	'jQuery',
   	'Underscore',
   	'Backbone',
-	'text!templates/score.html'
+	'text!templates/score.html',
 ], function($, _, Backbone, ScoreTpl){
 	
 	var ScoreView = Backbone.View.extend({
@@ -15,9 +15,6 @@ define([
 		render: function(){
 			this.$el.html(this.template(this.model.toJSON()));
 			return this;
-		},
-		events: {
-			
 		},
 		openForm: function(){
 			

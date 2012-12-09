@@ -1,6 +1,26 @@
+
 <% if(value) { %>
+	<!-- Please close your eyes when you look at this code :) -->
+	<script type="text/javascript" src="js/libs/jquery/jquery-1.8.0.js"></script>
+	<script type="text/javascript" src="js/libs/jqueryui/jquery-ui-1.9.2.custom.js"></script>
+	<script>
+		$(document).ready(function(){
+			var progressbar = $("#progressbar");
+			var progressVal = progressbar.data('progressval');
+			
+			if(progressVal < 50){
+				progressbar.addClass('progressbar-red');
+			} else {
+				progressbar.addClass('progressbar-green');
+			}
+
+
+			progressbar.progressbar({
+					value: progressVal
+			});
+		});
+	</script>
 <% percent = value * 100 / max; %>
-
-Poäng: <%= percent %> %
-
+	<h2>Poäng: <span>(<%= percent %> %)</span></h2>
+	<div id="progressbar" data-progressval="<%= percent %>"></div>
 <% } %>

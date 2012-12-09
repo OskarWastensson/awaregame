@@ -7,7 +7,7 @@ define([
   
 	// Order! doens't work in Chrome, this is the ugly version.
 	var tester = setInterval(function() {
-		if(typeof _ != 'undefined' || typeof $ != 'undefined') {
+		if(typeof _ != 'undefined' || typeof $ != 'undefined' || typeof jqueryui != 'undefined') {
 			_.noConflict();
 			$.noConflict();
 			Backbone.noConflict();

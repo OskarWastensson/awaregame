@@ -22,7 +22,7 @@ define([
 			AwRouter.navigate("questions/1", true);
 
 			function test1(){
-				console.debug("test1 func");
+				// console.debug("test1 func");
 			}
 
 

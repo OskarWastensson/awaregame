@@ -4,8 +4,8 @@ require.config({
     jQuery: 'libs/jquery/jquery',
     Underscore: 'libs/underscore/underscore',
     Backbone: 'libs/backbone/backbone',
-	asyncF: 'libs/facebook/asyncF',
-	FB: 'http://connect.facebook.net/en_US/all.js'
+	  asyncF: 'libs/facebook/asyncF',
+	  FB: 'http://connect.facebook.net/en_US/all.js'
   }
   // urlArgs: "bust33333",
  // urlArgs: "bust=" + (new Date()).getTime(),
@@ -20,7 +20,7 @@ require([
   'order!libs/jquery/jquery-1.8.0',
   'order!libs/underscore/underscore-1.3.3',
   'order!libs/backbone/backbone-0.9.2',
-  'asyncF!http://connect.facebook.net/en_US/all.js',
+  'asyncF!http://connect.facebook.net/en_US/all.js'
     
   //'order!libs/queryparams/backbone.queryparams'
   

@@ -2,7 +2,7 @@ define([
   // These are path alias that we configured in our bootstrap
   'jQuery',     // lib/jquery/jquery
   'Underscore', // lib/underscore/underscore
-  'Backbone'    // lib/backbone/backbone
+  'Backbone',
 ], function($, _, Backbone){
   // Above we have passed in jQuery, Underscore and Backbone
   // They will not be accesible in the global scope

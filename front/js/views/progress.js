@@ -12,7 +12,7 @@ define([
 			_.bindAll(this, "render");
 		},
 		render: function() {
-			console.log(this.data);
+			// console.log(this.data);
 			this.$el.html(this.template({
 				completed: this.options.answers.length,
 				total: this.collection.length

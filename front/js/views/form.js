@@ -36,7 +36,7 @@ define([
 			if(typeof this.answers.get(this.currentQuestionModel.get("id")) == 'undefined'){
 				this.$el.find("#question").html(new QuestionView({collection: this.currentQuestionModel}).render().el);
 			} else {
-				console.debug("Show the result of the question");
+				// console.debug("Show the result of the question");
 			}
 		},
 		events: {
@@ -58,7 +58,7 @@ define([
 					self.render();
 				}, 1000);
 			} else {
-				console.debug("Show the total result");
+				// console.debug("Show the total result");
 			}
 			return false;
 		}

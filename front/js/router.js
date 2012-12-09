@@ -32,7 +32,7 @@ define([
   var self = this;
   //Add a close method to all views in backbone
   Backbone.View.prototype.close = function () {
-      console.debug("Closing view");
+      // console.debug("Closing view");
       if (this.beforeClose) {
           this.beforeClose();
       }
@@ -90,8 +90,8 @@ define([
   		var self = AwRouter;
   		self.score.fetch({
   		  success: function() {
-  				console.log('Fetched score');
-  				console.log(self.score)
+  				// console.log('Fetched score');
+  				// console.log(self.score)
   				if(self.bothLoaded()) {
   		      self.afterLoad();
   				}		
@@ -111,7 +111,7 @@ define([
   	  return self.loadcounter === 2;
   	},
   	afterLoad: function () {
-  	  console.log(this.score)
+  	  // console.log(this.score)
   		var self = this; 
   	  self.fetchedAnswers = self.answers;
   	  self.question(self.answers.length + 1);
@@ -143,7 +143,7 @@ define([
                       self.navigate('questions/' + (parseInt(id)+1), {trigger: true});
                       return;
                   }
-      				  console.log('progress render:');
+      				  // console.log('progress render:');
          
       			  $("#progress").html(self.progressView.render().el);
 
@@ -154,7 +154,7 @@ define([
               $("#footer").html(self.scoreView.render().el); 
               
             } else {
-              console.debug("The question doesn't exist");
+              // console.debug("The question doesn't exist");
             }
 
           // } else {
@@ -195,31 +195,31 @@ define([
       }
     },
     fbLogin: function(callback, test){
-      console.log('fbLogin');
+      // console.log('fbLogin');
 	  FB.getLoginStatus(function(response) {
-		console.log('getloginstatus');
+		// console.log('getloginstatus');
 		if (response.status === 'connected') {
-			console.log('connected');
+			// console.log('connected');
 			
-      console.debug($(test));
+      // console.debug($(test));
 
       if(callback) callback();
 		
     } else if (response.status === 'not_authorized') {
 			// the user is logged in to Facebook, 
 			// but has not authenticated your app
-			console.log('User cancelled login or did not fully authorize.');
+			// console.log('User cancelled login or did not fully authorize.');
 		} else {
 			// the user isn't logged in to Facebook.
 			FB.login(function(response) {
 			if (response.authResponse) {
 				// Logged in
 				FB.api('/me', function(response) {
-				console.log('Good to see you, ' + response.name + '.');
+				// console.log('Good to see you, ' + response.name + '.');
 					if(callback) callback();
 				});
 			} else {
-				console.log('User cancelled login or did not fully authorize.');
+				// console.log('User cancelled login or did not fully authorize.');
 			}
 			}, {scope: 'publish_actions'});
 		}
@@ -230,7 +230,7 @@ define([
   var initialize = function(){
 	FB.Event.subscribe('auth.statusChange', function(response) {
 		if(response.status == 'connected') {
-			console.log('FB init');
+			// console.log('FB init');
 			var fbAuth = FB.getAuthResponse();		
 			// Alway send along FB signed request with ajax calls to backend
 			$.ajaxPrefilter( function( options, originalOptions, jqXHR ) {

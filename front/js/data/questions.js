@@ -15,7 +15,7 @@ define([
 				},
 				{
 					"text": 'Fråga 1, Alternativ 2',
-					"value": 80
+					"value": 40
 				},
 				{
 					"text": 'Fråga 1, Alernativ 3 - Dåligt',

@@ -18,7 +18,7 @@ define([
 			'click #invite': 'invite'
 		},
 		invite: function(){
-			console.debug("Go to facebook");
+			// console.debug("Go to facebook");
 		}
 	});
 	return HeaderView;
