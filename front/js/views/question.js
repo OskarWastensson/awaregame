@@ -55,7 +55,7 @@ define([
 					} else {
 						AwRouter.navigate('result', { trigger: true });
 					}
-				}, 10000);
+				}, 2000);
 			} else {
 				alert("You haven't answered the question!");
 			}
