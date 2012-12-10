@@ -27,7 +27,7 @@ define([
 				},
 				{
 					"text": 'Mer än 2 kg',
-					"value": 0
+					"value": 1
 				}
 			],
 			"good_value": 50
@@ -63,7 +63,7 @@ define([
 				},
 				{
 					"text": 'Mer än 15 portioner',
-					"value": 0
+					"value": 1
 				}
 			],
 			"good_value": 100
@@ -100,7 +100,7 @@ define([
 				},
 				{
 					"text": 'Mer än 15 portioner',
-					"value": 0
+					"value": 1
 				}
 			],
 			"good_value": 50
@@ -136,7 +136,7 @@ define([
 				},
 				{
 					"text": 'Mer än 15 portioner',
-					"value": 0
+					"value": 1
 				}
 			],
 			"good_value": 75
@@ -172,7 +172,7 @@ define([
 				},
 				{
 					"text": 'Mer än 15 portioner',
-					"value": 0
+					"value": 1
 				}
 			],
 			"good_value": 75
@@ -183,7 +183,7 @@ define([
 			"options": [
 				{
 					"text": 'En liten del',
-					"value": 0
+					"value": 1
 				},
 				{
 					"text": 'Ungefär hälften.',
@@ -218,7 +218,7 @@ define([
 				},
 				{
 					"text": 'Över 600 gram per vecka.',
-					"value": 0
+					"value": 1
 				}
 			],
 			"good_value": 50
@@ -245,7 +245,7 @@ define([
 				},
 				{
 					"text": 'Över 1 liter per vecka.',
-					"value": 0
+					"value": 1
 				}
 			],
 			"good_value": 50
@@ -280,7 +280,7 @@ define([
 				},
 				{
 					"text": 'Över 1 kilogram per dag.',
-					"value": 0
+					"value": 1
 				}
 			],
 			"good_value": 100
@@ -311,7 +311,7 @@ define([
 				},
 				{
 					"text": 'Mer än 10 skivor per dag.',
-					"value": 0
+					"value": 1
 				}
 			],
 			"good_value": 50
