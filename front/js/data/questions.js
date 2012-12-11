@@ -69,7 +69,6 @@ define([
 			],
 			"good_value": 100
 		}, 
-		, 
 		{
 			"id": 3,
 			"title": "Hur många portioner fläskkött äter du per vecka?", 
@@ -250,7 +249,7 @@ define([
 				}
 			],
 			"good_value": 50
-		}, ,{
+		},{
 			"id": 9,
 			"title": "Hur mycket mejeriprodukter äter du per dag?", 
 			"text": "Räkna med att en deciliter mjölk väger cirka 100 gram.",
