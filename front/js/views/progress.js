@@ -14,9 +14,11 @@ define([
 		render: function() {
 			// console.log(this.data);
 			this.$el.html(this.template({
-				completed: this.options.answers.length,
+				completed: this.options.answers.length+1,
 				total: this.collection.length
 			}));
+
+			console.debug(this.collection);
 			return this;
 		},
 		events: {

@@ -128,6 +128,7 @@ define([
           if(!self.questionsList){
             self.questionsList = new QuestionsCollection(QuestionsData);
           }
+          console.debug(self.questionsList);
 		  if(id > self.questionsList.length) {
 			  self.navigate('result', {trigger: true});
 			  return;
@@ -153,14 +154,7 @@ define([
               
               $("#footer").html(self.scoreView.render().el); 
               
-            } else {
-              // console.debug("The question doesn't exist");
             }
-
-          // } else {
-          //   self.requestedId = id;
-          //   self.fetchAnswers();
-          // }
         });
       });
     },
