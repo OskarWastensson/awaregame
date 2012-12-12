@@ -5,13 +5,14 @@ define([
 ], function($, _, Backbone){
 	var Questions = [
 		{
-			"id": 1,
+			"id": 1, 
 			"title": "Hur mycket ätbart matavfall slänger du per vecka?", 
-			"text": "Räkna inte med oätbara delar till exempel äggskal.",
+			"text": "Räkna inte med oätbara delar till exempel äggskal.", 
+
 			"options": [
 				{
-					"text": 'Inget',
-					"value": 100
+					"text": 'Inget', 
+					"value": 100     
 				},
 				{
 					"text": 'Upp till 1/2 kg.',
@@ -30,7 +31,7 @@ define([
 					"value": 1
 				}
 			],
-			"good_value": 50
+			"good_value": 50 
 		}, 
 		{
 			"id": 2,

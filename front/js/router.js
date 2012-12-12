@@ -15,7 +15,7 @@ define([
   'collections/answers'
 ], function(
   $,
-   _,
+  _,
   Backbone, 
   WelcomeView, 
   HeaderView, 
@@ -190,31 +190,26 @@ define([
     },
     fbLogin: function(callback, test){
       // console.log('fbLogin');
-	  FB.getLoginStatus(function(response) {
-		// console.log('getloginstatus');
-		if (response.status === 'connected') {
-			// console.log('connected');
-			
-      // console.debug($(test));
-
-      if(callback) callback();
-		
-    } else if (response.status === 'not_authorized') {
-			// the user is logged in to Facebook, 
-			// but has not authenticated your app
-			// console.log('User cancelled login or did not fully authorize.');
-		} else {
-			// the user isn't logged in to Facebook.
-			FB.login(function(response) {
-			if (response.authResponse) {
-				// Logged in
-				FB.api('/me', function(response) {
-				// console.log('Good to see you, ' + response.name + '.');
-					if(callback) callback();
-				});
-			} else {
+			FB.getLoginStatus(function(response) {
+			// console.log('getloginstatus');
+			if (response.status === 'connected') {
+				if(callback) callback();
+			} else if (response.status === 'not_authorized') {
+				// the user is logged in to Facebook, 
+				// but has not authenticated your app
 				// console.log('User cancelled login or did not fully authorize.');
-			}
+			} else {
+				// the user isn't logged in to Facebook.
+				FB.login(function(response) {
+					if (response.authResponse) {
+						// Logged in
+						FB.api('/me', function(response) {
+						// console.log('Good to see you, ' + response.name + '.');
+						if(callback) callback();
+						});
+					} else {
+				// console.log('User cancelled login or did not fully authorize.');
+				}
 			}, {scope: 'publish_actions'});
 		}
 	 });
