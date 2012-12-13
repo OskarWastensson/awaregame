@@ -163,8 +163,8 @@ define([
 		this.score.publish({success: function () {
 			self.highScores.fetch({
 				success: function(model, data) {
-				$('#content').html(self.resultView.render().el);
-			}
+					$('#content').html(self.resultView.render().el);
+				}
 			})
 		}});
 	},
@@ -221,10 +221,16 @@ define([
 		if(response.status == 'connected') {
 			// console.log('FB init');
 			var fbAuth = FB.getAuthResponse();		
+			//var fbAuth = FB.getAuthResponse();		
 			// Alway send along FB signed request with ajax calls to backend
 			$.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
 				var data;
+				
 				options.url = options.url += '?code=' + fbAuth.signedRequest;
+				// Renew signed request for the next request
+				FB.getLoginStatus(function(response) {
+					fbAuth = response.authResponse;
+				});
 			});
 		}
 	});

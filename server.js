@@ -97,9 +97,9 @@ function postAnswer(req, res, next) {
   answer.user = req.user.id;
   
   answer.save(function (err) {
-	if(err) {
-	  res.send(err);
-	}
+		if(err) {
+			res.send(err);
+		}	
 	
 	Answer.find({'_id': answer._id}, function(err, result) {
 		if(err) {

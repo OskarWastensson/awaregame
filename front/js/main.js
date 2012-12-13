@@ -8,9 +8,7 @@ require.config({
 	  asyncF: 'libs/facebook/asyncF',
 	  FB: 'http://connect.facebook.net/en_US/all.js'
   }
-  // urlArgs: "bust33333",
- // urlArgs: "bust=" + (new Date()).getTime(),
-  });
+});
 
 require([
   // Load our app module and pass it to our definition function
